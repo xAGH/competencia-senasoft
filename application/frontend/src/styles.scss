@@ -8,18 +8,23 @@
 
 // Scss Variables
 
-$button-round-value: 2rem;
+// App Colors
+
 $siigo-blue: #00aaff;
-$button-overlay-color: rgba(0, 0, 0, 0.25);
+$error-color: #FF6719;
 $shadow-color: rgba(0, 0, 0, 0.25);
-$shadow-profile: 0 1px 8px $shadow-color;
-$pressed-shadow-profile: 0 1px 4px $shadow-color;
 
 // Player colors
 $player-color-1: #F2CC46;
 $player-color-2: #6CDF12;
 $player-color-3: #4AABE1;
 $player-color-4: #EC6C23;
+
+$button-round-value: 2rem;
+$button-overlay-color: rgba(0, 0, 0, 0.25);
+$shadow-profile: 0 1px 8px $shadow-color;
+$pressed-shadow-profile: 0 1px 4px $shadow-color;
+
 
 * {
   font-family: "Sora", sans-serif;
@@ -71,6 +76,10 @@ $player-color-4: #EC6C23;
 
 .player-color-4 {
   color: $player-color-4;
+}
+
+.error-color {
+  color: $error-color;
 }
 
 .bold-0 {
