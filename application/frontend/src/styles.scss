@@ -1,2 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Font import
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap');
+
+// Bootstrap Import
 @import 'bootstrap/scss/bootstrap.scss';
+
+* {
+  font-family: 'Sora', sans-serif;
+}
