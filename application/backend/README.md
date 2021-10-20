@@ -14,6 +14,6 @@ En el siguiente documento se definirá la estructura del backend del proyecto. S
 
 1. Instalar paquetes necesarios para el proyecto.
 
-´´´python
-    pip install flask flask_socketio flask_cors pyjwt pymysql
-´´´
+```bash
+    pip install -r requirements.txt
+```
