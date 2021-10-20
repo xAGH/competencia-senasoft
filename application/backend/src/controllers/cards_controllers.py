@@ -10,3 +10,11 @@ class CardsController(MethodView):
 
     def get(self):
         return self.cards.serve_cards()
+
+    def post(self):
+        user_id = request.json["user_id"]
+        dev_card = request.json["dev_card"]
+        mod_card = request.json["mod_card"]
+        error_card = request.json["error_card"]
+        
+        return self.cards.question(None, user_id, dev_card, mod_card, error_card)

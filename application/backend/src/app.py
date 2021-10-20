@@ -52,7 +52,7 @@ class Application:
         cls.app.add_url_rule(users['auth'], view_func = users['auth_controller'], methods = ["GET"])
         cls.app.add_url_rule(rooms['create_room'], view_func=rooms['rooms_view'], methods=["POST"])
         cls.app.add_url_rule(rooms['room'], view_func=rooms['rooms_view'], methods=['GET'])
-        cls.app.add_url_rule(cards['cards'], view_func=cards['cards_controller'], methods=['GET'])
+        cls.app.add_url_rule(cards['cards'], view_func=cards['cards_controller'])
 
     @classmethod
     def __register_error_handlers(cls) -> None:
