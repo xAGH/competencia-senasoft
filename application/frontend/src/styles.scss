@@ -15,6 +15,12 @@ $shadow-color: rgba(0, 0, 0, 0.25);
 $shadow-profile: 0 1px 8px $shadow-color;
 $pressed-shadow-profile: 0 1px 4px $shadow-color;
 
+// Player colors
+$player-color-1: #F2CC46;
+$player-color-2: #6CDF12;
+$player-color-3: #4AABE1;
+$player-color-4: #EC6C23;
+
 * {
   font-family: "Sora", sans-serif;
 }
@@ -49,4 +55,32 @@ $pressed-shadow-profile: 0 1px 4px $shadow-color;
     top: 0;
     left: 0;
   }
+}
+
+.player-color-1 {
+  color: $player-color-1;
+}
+
+.player-color-2 {
+  color: $player-color-2;
+}
+
+.player-color-3 {
+  color: $player-color-3;
+}
+
+.player-color-4 {
+  color: $player-color-4;
+}
+
+.bold-0 {
+  font-weight: 400;
+}
+
+.bold-1 {
+  font-weight: 600;
+}
+
+.bold-2 {
+  font-weight: 800;
 }
