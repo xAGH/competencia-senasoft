@@ -24,6 +24,8 @@ $button-round-value: 2rem;
 $button-overlay-color: rgba(0, 0, 0, 0.25);
 $shadow-profile: 0 1px 8px $shadow-color;
 $pressed-shadow-profile: 0 1px 4px $shadow-color;
+$base-round: 0.625rem;
+$base-round-large: 1.5625rem;
 
 
 * {
@@ -80,6 +82,16 @@ $pressed-shadow-profile: 0 1px 4px $shadow-color;
 
 .error-color {
   color: $error-color;
+}
+
+.modal-style {
+  box-shadow: $shadow-profile;
+  padding: 2rem;
+  border-radius: $base-round-large;
+}
+
+.clear {
+  background-color: transparent;
 }
 
 .bold-0 {
