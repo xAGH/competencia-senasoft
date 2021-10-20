@@ -9,25 +9,39 @@ class RoomNamespace(Namespace):
     users_in_room: list = []
 
     def on_connect(self):
-        print("Connected")
+        print("Connected", request.sid)
     
     def on_disconnect(self):
-        print("Disconnected")
+        print("Disconnected", request.sid)   
     
     def on_join(self, data):
         room = data['room']
-        username = f"player_{len(self.users_in_room+1)}"
+        room_players = self.rooms["players"]
+        username = f"player_{len(room_players)+1}"
         try:
-            if len(self.users_in_room) >= int(getenv('ROOMS_LIMIT')):
+            if len(room_players) >= int(getenv('ROOMS_LIMIT')):
                 self.emit("room_full", {
                     "message": "Room is full"
-                }, room=room)
+                })
+                return
+            if username in room_players:
+                self.emit("user_is_on_room", {
+                    "messsage": f"El usuario {username} ya se encuentra en sala"
+                })
+                return
             self.enter_room(request.sid, room=room)
-            self.users_in_room.append(username)
+            new_player = {
+                "name":username,
+                "sid":request.sid,
+                "cards": [],
+                "cards_discovered": []
+            }
+            room_players.append(new_player)
             self.emit("user_joined", {
                 "message": "User was joined",
-                "users": self.users_in_room
-            })
+                "users": room_players,
+                "you" : new_player
+            }, room=room)
         except ConnectionRefusedError as cr:
             raise ConnectionRefusedError
         except Exception as e:
@@ -43,7 +57,7 @@ class RoomNamespace(Namespace):
             self.emit("user_leave", {
                 "message": f"User {username} left",
                 "users": self.users_in_room
-            })
+            }, room=room)
         except ConnectionRefusedError:
             raise ConnectionRefusedError
         except Exception:
