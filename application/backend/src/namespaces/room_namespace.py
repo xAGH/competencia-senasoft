@@ -16,7 +16,7 @@ class RoomNamespace(Namespace):
     
     def on_join(self, data):
         room = data['room']
-        username = f"player_{len(self.users_in_room+1)}"
+        username = f"player_{len(self.users_in_room)+1}"
         try:
             if len(self.users_in_room) >= int(getenv('ROOMS_LIMIT')):
                 self.emit("room_full", {
