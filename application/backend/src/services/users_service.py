@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from datetime import datetime, timedelta
 from src.models import Model
+from src.services.email_services import Email
 from os import getenv
 
 
@@ -11,6 +12,7 @@ class Users():
 
     def __init__(self):
         self.model = Model()
+        self.email = Email()
 
     def signin(self, email, nickname, password):
         verify_email = self.model.fetch_one(f"SELECT email FROM users WHERE email = '{email}'")
@@ -18,7 +20,7 @@ class Users():
         if verify_email is None or len(verify_email) == 0:
             hash_password =  generate_password_hash(password)
             self.model.execute_query(f"INSERT INTO users(nickname, email, password) VALUES('{nickname}', '{email}', '{hash_password}')")
-                  
+            self.email.confirmation_email(email, nickname)
             return make_response(jsonify({
                 "message": "The user was created successfully",
                 "statuscode": 201

@@ -1,13 +1,10 @@
 from flask import request, make_response, jsonify
 from flask.views import MethodView
-from src.models import Model
-from werkzeug.security import generate_password_hash, check_password_hash
 from src.services.users_service import Users
 
 class UsersSigninController(MethodView):
 
     def __init__(self):
-        self.model = Model()
         self.users = Users()
 
     def post(self):
@@ -36,7 +33,6 @@ class UsersSigninController(MethodView):
 
 class UsersSignupController(MethodView):
     def __init__(self):
-        self.model = Model()
         self.users = Users()
 
     def post(self):
