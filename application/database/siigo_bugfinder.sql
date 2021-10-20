@@ -6,7 +6,7 @@ CREATE TABLE users(
     nickname VARCHAR(20),
     email VARCHAR(100),
     password VARCHAR(200),
-    is_confirmed BOOLEAN DEFAULT 0
+    is_confirmed BOOLEAN DEFAULT false
 );
 
 CREATE TABLE cards(
@@ -17,6 +17,12 @@ CREATE TABLE cards(
 CREATE TABLE categories(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     name CHAR(15)
+);
+
+CREATE TABLE user_stats(
+	user INT,
+    games_played INT,
+    games_won INT
 );
 
 ALTER TABLE cards

@@ -50,6 +50,7 @@ class Users():
                 response = make_response(jsonify({
                     "message": f"User with nickname {user_data[1]} is now login.",
                     "statuscode":200,
+                    "confirmedaccount": user_data[4],
                     "token": token
                 }), 200)
 
