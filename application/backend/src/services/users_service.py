@@ -13,6 +13,7 @@ class Users():
     def __init__(self):
         self.model = Model()
         self.email = Email()
+        self.secret_jwt = getenv("JWT_SECRET_KEY")
 
     def signup(self, email, nickname, password):
         verify_email = self.model.fetch_one(f"SELECT email FROM users WHERE email = '{email}'")
@@ -20,7 +21,11 @@ class Users():
         if verify_email is None or len(verify_email) == 0:
             hash_password =  generate_password_hash(password)
             self.model.execute_query(f"INSERT INTO users(nickname, email, password) VALUES('{nickname}', '{email}', '{hash_password}')")
-            self.email.confirmation_email(email, nickname)
+            id_user = self.model.fetch_one("SELECT id FROM users ORDER BY id DESC")[0]
+            auth_token = jwt.encode({
+                "id": id_user
+            }, self.secret_jwt, "HS256")
+            self.email.confirmation_email(email, nickname, auth_token)
             return make_response(jsonify({
                 "message": "The user was created successfully",
                 "statuscode": 201
@@ -47,7 +52,7 @@ class Users():
                     "email": email,
                     "nickname": user_data[1],
                     "exp": datetime.utcnow() + timedelta(minutes=60)
-                }, getenv("JWT_SECRET_KEY"))
+                }, self.secret_jwt, "HS256")
 
                 response = make_response(jsonify({
                     "message": f"User with nickname {user_data[1]} is now login.",
@@ -63,4 +68,21 @@ class Users():
         return make_response(jsonify({
             "message":"Wrong credentials.",
             "statuscode": 400
-        }), 400)
+        }), 400)\
+
+    def auth_user(self, token):
+        try: 
+            user_id = jwt.decode(token,self.secret_jwt, "HS256").get("id")
+            self.model.execute_query(f"UPDATE users SET is_confirmed = 1 WHERE id = {user_id}")
+
+            return make_response(jsonify({
+                "message": "User's email confirmed successfuly.",
+                "statudcode": 200
+            }), 200)
+
+        except Exception as e:
+            return make_response(jsonify({
+                "message": "The token is invalid.",
+                "statuscode": 400,
+                "error": f"{e}"
+            }))

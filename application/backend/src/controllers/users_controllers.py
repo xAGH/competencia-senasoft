@@ -58,4 +58,9 @@ class UsersLoginController(MethodView):
         }), 400)
 
 class UsersAuthController(MethodView):
-    pass
+
+    def __init__(self):
+        self.users = Users()
+
+    def get(self, id):
+        return self.users.auth_user(id)

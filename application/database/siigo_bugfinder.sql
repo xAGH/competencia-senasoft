@@ -6,7 +6,7 @@ CREATE TABLE users(
     nickname VARCHAR(20),
     email VARCHAR(100),
     password VARCHAR(200),
-    is_confirmed BOOLEAN DEFAULT false
+    is_confirmed BOOLEAN DEFAULT 0
 );
 
 CREATE TABLE cards(

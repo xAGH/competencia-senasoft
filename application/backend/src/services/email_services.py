@@ -21,7 +21,7 @@ class Email():
         mailServer.sendmail("siigobugfinder@outlook.com", email, msg.as_string())
         mailServer.close()
 
-    def confirmation_email(self, email, nickname):
-        message = f"""<h1>Works {nickname}</h1>"""
+    def confirmation_email(self, email, nickname, auth_token):
+        message = f"""<h1>Works {nickname}.\n<a href="http://localhost:4000/users/auth/{auth_token}">Confirm</a></h1>"""
         subject = "Please confirm your email"
         self.send_email(message, subject, email)
