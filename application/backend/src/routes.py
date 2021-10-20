@@ -14,5 +14,6 @@ users: dict[any] = {
 
 rooms: dict[any] = {
     "rooms_view": RoomController.as_view("room"),
-    "create_room": "/room",
+    "create_room": "/create_room",
+    "room": "/room"
 }

@@ -13,7 +13,7 @@ class Application:
     @classmethod
     def create_app(cls) -> dict[Flask and SocketIO]:
         cls.app = Flask(__name__)
-        cls.socketio = SocketIO(cls.app, async_mode="threading", cors_allowed_origins=["http://localhost:4200", "*"])
+        cls.socketio = SocketIO(cls.app, cors_allowed_origins=["http://localhost:4200", "*"])
         cls.__settings()
         return {"app": cls.app, "socketio": cls.socketio}
 
@@ -49,7 +49,8 @@ class Application:
     def __register_routes(cls) -> None:
         cls.app.add_url_rule(users['signin'], view_func = users['signin_controller'], methods = ["POST"])
         cls.app.add_url_rule(users['signup'], view_func = users['signup_controller'], methods = ["POST"])
-        cls.app.add_url_rule(rooms['create_room'], view_func=rooms['rooms_view'], methods=["POST", "GET"])
+        cls.app.add_url_rule(rooms['create_room'], view_func=rooms['rooms_view'], methods=["POST"])
+        cls.app.add_url_rule(rooms['room'], view_func=rooms['rooms_view'], methods=['GET'])
 
     @classmethod
     def __register_error_handlers(cls) -> None:

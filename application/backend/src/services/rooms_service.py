@@ -1,7 +1,13 @@
-from os import getenv
+from flask import request, make_response, jsonify
+from src.namespaces import RoomNamespace
+from src.models import Model
+from os import getenv, makedirs
 import random
 
 class RoomsService:
+
+    def __init__(self) -> None:
+        self.model: Model = Model()
 
     def generate_room_code(self, characters_quantity: int=5):
         room_code: str = ""
@@ -9,3 +15,21 @@ class RoomsService:
             choice: str = random.choice("0123456789ABCDEF")
             room_code += choice
         return room_code
+    
+    def create_room(self, owner):
+        try:
+            room = self.generate_room_code()
+            RoomNamespace.rooms[room] = {
+                "owner": owner
+            }
+            response = make_response(jsonify({
+                "room": room,
+                "statusCode": 201
+            }), 201)
+            return response
+        except Exception as e:
+            return make_response(jsonify({
+                "error": True,
+                "message": "Exception: {}".format(e),
+                "statusCode": 400
+            }), 400)
