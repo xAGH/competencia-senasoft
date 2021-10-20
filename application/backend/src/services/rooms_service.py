@@ -24,8 +24,8 @@ class RoomsService:
         try:
             room = self.generate_room_code()
             RoomNamespace.rooms[room] = {
-                "owner": owner
-            }
+                "players": []
+            } 
             response = make_response(jsonify({
                 "room": room,
                 "message": "The new room was created",
