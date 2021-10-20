@@ -16,7 +16,12 @@ class RoomNamespace(Namespace):
     
     def on_join(self, data):
         room = data['room']
-        room_players = self.rooms["players"]
+        if (not room in self.rooms):
+            self.emit('room_not_found', {
+                "message": f"Room {room} is not available"
+            })
+            return
+        room_players = self.rooms[room]["players"]
         username = f"player_{len(room_players)+1}"
         try:
             if len(room_players) >= int(getenv('ROOMS_LIMIT')):
@@ -24,7 +29,11 @@ class RoomNamespace(Namespace):
                     "message": "Room is full"
                 })
                 return
-            if username in room_players:
+
+            match = [player for player in room_players if request.sid == player["sid"]]
+            
+            if len(match) > 0:
+                username = match[0]["name"]
                 self.emit("user_is_on_room", {
                     "messsage": f"El usuario {username} ya se encuentra en sala"
                 })
