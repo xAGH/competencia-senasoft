@@ -16,7 +16,7 @@ class RoomNamespace(Namespace):
     
     def on_join(self, data):
         room = data['room']
-        username = f"player_{self.users_in_room+1}"
+        username = f"player_{len(self.users_in_room+1)}"
         try:
             if len(self.users_in_room) >= int(getenv('ROOMS_LIMIT')):
                 self.emit("room_full", {
@@ -34,4 +34,17 @@ class RoomNamespace(Namespace):
             raise Exception
 
     def on_leave(self, data):
-        pass
+        room = data['room']
+        username = data['username']
+        try:
+            self.users_in_room.index(username)
+            self.users_in_room.remove(username)
+            self.leave_room(request.sid, room)
+            self.emit("user_leave", {
+                "message": f"User {username} left",
+                "users": self.users_in_room
+            })
+        except ConnectionRefusedError:
+            raise ConnectionRefusedError
+        except Exception:
+            raise Exception
