@@ -1,2 +1,11 @@
-<h1>App component</h1>
-<router-outlet></router-outlet>
+<main class="container">
+  <h1>Room Manager</h1>
+  <router-outlet></router-outlet>
+  <hr class="mx-3">
+  <button class="app-btn white me-3" (click)="connectToSocket()">Conectarse</button>
+  <button class="app-btn" (click)="disconnectFromSocket()">Desconectarse</button>
+  <hr class="mx-3 bg-transparent">
+  <button class="app-btn me-3" (click)="joinRoom(roomInput.value)">Unirse</button>
+  <input #roomInput type="text" id="room">
+  <hr class="mx-3">
+</main>
