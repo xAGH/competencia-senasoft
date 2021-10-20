@@ -1,9 +1,9 @@
-from flask import json, request, make_response, jsonify
+from flask import request, make_response, jsonify
 from flask.views import MethodView
 from src.models import Model
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class UsersController(MethodView):
+class UsersSigninController(MethodView):
 
     def __init__(self):
         self.model = Model()
@@ -11,15 +11,16 @@ class UsersController(MethodView):
     def post(self):
 
         if request.is_json:
+
             try:
                 email = request.json['email']
-                verify_data = self.model.fetch_one("SELECT * FROM users WHERE email = %s" % email)
+                verify_email = self.model.fetch_one(f"SELECT email FROM users WHERE email = '{email}'")
 
-                if len(verify_data) == 0:
+                if verify_email is None or len(verify_email) == 0:
                     nickname = request.json['nickname']
                     password = request.json['password']
                     hash_password = generate_password_hash(password)
-                    self.model.execute_query("INSERT INTO users(nickname, email, password) VALUES(%s, %s, %s)" % email, nickname, hash_password)
+                    self.model.execute_query(f"INSERT INTO users(nickname, email, password) VALUES('{nickname}', '{email}', '{hash_password}')")
                     
                     return make_response(jsonify({
                         "message": "The user was created successfully",
@@ -32,7 +33,7 @@ class UsersController(MethodView):
                 }), 400)
 
             except Exception as e:
-                
+                raise e
                 return make_response(jsonify({
                     "message": "Send me an 'email', 'nickname' and 'password' key's.",
                     "statuscode": 400,
@@ -43,3 +44,27 @@ class UsersController(MethodView):
             "message":"Send me a JSON format.",
             "statuscode":400
         }), 400)
+
+
+class UsersSignupController(MethodView):
+    def __init__(self):
+        self.model = Model()
+
+    def post(self):
+        
+        if request.is_json:
+            
+            try:
+                email = request.json['email']
+                password = request.json['password']
+                verify_data = self.model.fetch_one("SELECT * FROM users WHERE email = %s" % email)
+
+                if len(verify_data) != 0:
+                    verify_password = check_password_hash(verify_data[1])
+
+            except:
+                pass
+                
+
+class UsersAuthController(MethodView):
+    pass

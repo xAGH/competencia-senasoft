@@ -7,8 +7,10 @@ class Connection:
     @classmethod
     def open_connection(cls):
         try:
-            pass
+            cls.mysql = connect(host="localhost", user="root", password="Sena1234", database="siigo_bugfinder")
+            return cls.mysql
         except MySQLError as me:
-            pass
+            raise me
         except Exception as e:
-            pass
+            print("Error: {0}".format(e))
+            raise e
