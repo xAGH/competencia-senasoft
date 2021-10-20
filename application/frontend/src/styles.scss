@@ -43,6 +43,19 @@ $base-round-large: 1.5625rem;
   box-shadow: $shadow-profile;
   transition: all 150ms;
 
+  &.icon {
+    $round-size: 3.5rem;
+    width: $round-size;
+    height: $round-size;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &>* {
+      font-size: 1.75rem;
+    }
+  }
+
   &.white {
     background-color: white;
     color: $siigo-blue;
