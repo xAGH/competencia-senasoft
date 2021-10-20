@@ -1,25 +1,7 @@
-from flask import request, make_response, jsonify
-from flask.views import MethodView
-from flask_socketio import send, emit, ConnectionRefusedError
+from flask_socketio import send, emit, ConnectionRefusedError, join_room, leave_room
 from flask_socketio.namespace import Namespace
-from src.services.rooms_service import RoomsService
 
-class RoomNamespace(MethodView, Namespace):
-    
-    rooms: dict = {}
-
-    def __init__(self) -> None:
-        self.room_service: RoomsService = RoomsService()
-    
-    def post(self):
-        if request.is_json:
-            owner = request.json['owner']
-            room = self.room_service.generate_room_code()
-        response = make_response(jsonify({
-            "message": "Bad request. Please send a Json format",
-            "statusCode": 400
-        }), 400)
-        return response
+class RoomNamespace(Namespace):
     
     async def on_connection(self, sid):
         print("Connected", sid)
@@ -27,5 +9,14 @@ class RoomNamespace(MethodView, Namespace):
     async def on_disconnect(self, sid):
         print("Disconnected", sid)
     
-    async def on_message(self, sid):
+    async def on_join(self, sid, data):
+        username = data['username']
+        room = data['room']
+        await self.enter_room(sid, room)
+        await self.send({
+            "username": username,
+            "message": "has entered the room"
+        }, to=room)
+    
+    async def on_leave(self, sid, data):
         pass
