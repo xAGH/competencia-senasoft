@@ -19,5 +19,11 @@ CREATE TABLE categories(
     name CHAR(15)
 );
 
+CREATE TABLE user_stats(
+	user INT,
+    games_played INT,
+    games_won INT
+);
+
 ALTER TABLE cards
 	ADD FOREIGN KEY (category) REFERENCES categories(id);
