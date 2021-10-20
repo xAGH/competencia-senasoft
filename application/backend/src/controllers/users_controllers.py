@@ -2,7 +2,7 @@ from flask import request, make_response, jsonify
 from flask.views import MethodView
 from src.services.users_service import Users
 
-class UsersSigninController(MethodView):
+class UsersSignupController(MethodView):
 
     def __init__(self):
         self.users = Users()
@@ -16,7 +16,7 @@ class UsersSigninController(MethodView):
                 nickname = request.json['nickname']
                 password = request.json['password']                        
 
-                return self.users.signin(email, nickname, password)
+                return self.users.signup(email, nickname, password)
 
             except Exception as e:
                 return make_response(jsonify({
@@ -31,7 +31,7 @@ class UsersSigninController(MethodView):
         }), 400)
 
 
-class UsersSignupController(MethodView):
+class UsersLoginController(MethodView):
     def __init__(self):
         self.users = Users()
 
@@ -43,7 +43,7 @@ class UsersSignupController(MethodView):
                 email = request.json['email']
                 password = request.json['password']
 
-                return self.users.signup(email, password)
+                return self.users.login(email, password)
 
             except Exception as e:
                 return make_response(jsonify({

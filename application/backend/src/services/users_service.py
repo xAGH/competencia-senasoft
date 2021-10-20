@@ -14,7 +14,7 @@ class Users():
         self.model = Model()
         self.email = Email()
 
-    def signin(self, email, nickname, password):
+    def signup(self, email, nickname, password):
         verify_email = self.model.fetch_one(f"SELECT email FROM users WHERE email = '{email}'")
 
         if verify_email is None or len(verify_email) == 0:
@@ -31,7 +31,7 @@ class Users():
             "statuscode": 400
         }), 400)
 
-    def signup(self, email, password):
+    def login(self, email, password):
         user_data = self.model.fetch_one(f"SELECT * FROM users WHERE email = '{email}'")
 
         if user_data is None or len(user_data) == 0:

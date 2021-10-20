@@ -37,7 +37,7 @@ class Application:
 
     @classmethod
     def __register_routes(cls) -> None:
-        cls.app.add_url_rule(users['signin'], view_func = users['signin_controller'], methods = ["POST"])
+        cls.app.add_url_rule(users['login'], view_func = users['login_controller'], methods = ["POST"])
         cls.app.add_url_rule(users['signup'], view_func = users['signup_controller'], methods = ["POST"])
 
     @classmethod
