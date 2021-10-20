@@ -11,11 +11,17 @@ export class AppComponent {
 
   constructor(private socketSrv: SocketioService) {
     const data = { username: 'user', room: 'ABCDE' };
-    socketSrv.socket.emit('join', socketSrv.socket.id, data);
     socketSrv.socket.on('message', (data) => {
       console.log(data);
-    }
-    );
+    });
+    socketSrv.socket.on('room_full', (data) => {
+      if (data.sid !== socketSrv.socket.id) return;
+      console.log(data);
+    });
+
+    socketSrv.socket.on('user_joined', (data) => {
+      console.log(data)
+    })
   }
 
   joinRoom(room : string) {
