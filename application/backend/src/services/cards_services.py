@@ -1,11 +1,9 @@
-from os import error
-from flask import json, make_response, jsonify
-from pymysql import err
+from flask import make_response, jsonify
 from src.models import Model
 from random import randint
 from src.namespaces.room_namespace import RoomNamespace
 
-class Cards():
+class CardsService:
     
     def __init__(self):
         self.model = Model()
