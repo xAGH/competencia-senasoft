@@ -12,6 +12,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./components/public/home/home.module').then((m) => m.HomeModule),
   },
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./components/public/page-not-found/page-not-found.module').then(
+        (m) => m.PageNotFoundModule
+      ),
+  },
 ];
 
 @NgModule({
