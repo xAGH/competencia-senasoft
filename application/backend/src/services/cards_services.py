@@ -1,13 +1,12 @@
 from flask import make_response, jsonify, Response
 from src.models import Model
 from random import randint
-from src.namespaces.room_namespace import RoomNamespace
 
 class CardsService:
     
     """Clase para proveer servicios en cuanto a acciones de las cartas."""
 
-    def __init__(self) -> None:
+    def __init__(self, rooms) -> None:
         """
         Método constructor.
             |- Retorno -> None;
@@ -15,7 +14,7 @@ class CardsService:
                           crea una referencia del diccionario rooms en la clase RoomNamespace.
         """
         self.model = Model()
-        self.rooms = RoomNamespace.rooms
+        self.rooms = rooms
 
     def get_cards(self) -> tuple:
 
