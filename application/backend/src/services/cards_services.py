@@ -125,10 +125,25 @@ class CardsService:
 
         players: dict = self.rooms[room]["players"]
 
+        # Se recorre la lista que devuelve la llave del diccionario players en la llave "players"
         for i in players:
-
+            # Cada iteración de i devuelve una estructura similar a la siguiente:
+            # {
+            #     "cards":[4, 8, 5, 9],
+            #     "discovered_cards": [1, 6, 10, 11, 12, 15],
+            #     "score": 1/12 * 100,
+            #     "nickname": "Nickname"
+            #     "conected": True
+            # }
+            # Se itera sobre la estructura anterior en la llave de "cards"
             for j in range(len(i["cards"])):
-                
+                # Cada iteración de j devuelve una estructura como la siguiente:
+                    # [4, 8, 5, 9]
+
+                # Se comprueba si i en la llave "cards" y posición j es igual a alguna de las 3 cartas
+                # que entran como parámetro. Dado que el resultado de lo anterior sea verdadero, se agrega 
+                # a la lista un diccionario con una clave player_index igual al indice del jugador que tiene la carta
+                # y una llave x_card igual a la carta que tiene dicho jugador.
                 if i["cards"][j] == dev_card:
                     answers.append({
                         "player_index": players.index(i),
