@@ -13,7 +13,9 @@ class Application:
     @classmethod
     def create_app(cls) -> dict[Flask and SocketIO]:
         cls.app = Flask(__name__)
-        cls.socketio = SocketIO(cls.app, cors_allowed_origins=["http://localhost:4200", "*"], logger=True, engineio_logger=True)
+        cls.socketio = SocketIO(cls.app, kwargs={
+            "pingTimeout": 30000,
+        }, cors_allowed_origins=["http://localhost:4200", "*"], logger=True, engineio_logger=True)
         cls.__settings()
         return {"app": cls.app, "socketio": cls.socketio}
 

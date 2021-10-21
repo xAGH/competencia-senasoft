@@ -68,9 +68,10 @@ class RoomNamespace(Namespace):
             self.emit("game_start", {
                 "message": "Game is started",
                 "data": self.cards_service.serve_cards(),
-                "first_turn": self.current_turn,
+                "turn": self.current_turn,
                 "time": room_time
             }, room=room)
+            return
         self.emit("game_waiting", {
             "message": "Waiting for players"
         }, room=room)
@@ -79,15 +80,14 @@ class RoomNamespace(Namespace):
         room = data['room']
         total_time = GameService.get_elapsed_seconds(self.rooms[room]["system"]["room_time"])
         if (total_time >= int(getenv('TIME_LIMIT'))):
-            gen = GameService.next_turn(self.current_turn)
-            self.current_turn = next(gen)
+            gen_turn = GameService.next_turn(self.current_turn)
+            self.current_turn = next(gen_turn)
             new_room_time = self.rooms[room]["system"]["room_time"] = GameService.get_time()
             self.emit("game_next_turn", {
                 "message": "The next game turn",
                 "turn": self.current_turn,
                 "time": new_room_time
             }, room=room)
-        return
     
     def on_game_in_course(self):
         pass
@@ -95,13 +95,28 @@ class RoomNamespace(Namespace):
     def on_make_question(self):
         pass
 
-    def on_make_accusation(self, data):
+    def on_throw_accusation(self, data):
         room = data['room']
-        acussation_info  = data['']
-
+        accusation  = data['accusation']
+        throw_accusation = self.cards_service.accusation(room, accusation['dev_card'], accusation['mod_card'], accusation['error_card'], accusation['player'])
+        if throw_accusation:
+            self.emit("user_win", {
+                "message": "User's accusation win"
+            }, room=room)
+        gen_turn = GameService.next_turn(self.current_turn)
+        self.current_turn = next(gen_turn)
+        new_room_time = self.rooms[room]["system"]["room_time"] = GameService.get_time()
+        self.emit("game_next_turn", {
+            "data": "False accusation",
+            "turn": self.current_turn,
+            "time": new_room_time
+        }, room=room)
+    
     def on_game_end(self, data):
         room = data['room']
         self.rooms[room]["system"]["isGameStarted"] = False
+        self.rooms.pop(room)
+        self.close_room(room)
         self.emit("game_end", {
             "message": "Games end"
         }, room=room)
