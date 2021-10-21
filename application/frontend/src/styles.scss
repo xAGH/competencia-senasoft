@@ -29,6 +29,16 @@ $base-round: 0.625rem; // 10px
 $base-round-medium: 0.9375rem; // 15 px
 $base-round-large: 1.5625rem; // 25 px
 
+html{
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100%;
+}
 
 * {
   font-family: "Sora", sans-serif;
