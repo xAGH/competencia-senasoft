@@ -9,12 +9,13 @@ class CardsController(MethodView):
         self.cards = Cards()
 
     def get(self):
-        return self.cards.serve_cards()
+        return self.cards.serve_cards("a")
 
     def post(self):
         user_id = request.json["user_id"]
         dev_card = request.json["dev_card"]
         mod_card = request.json["mod_card"]
         error_card = request.json["error_card"]
+        room = request.json["room"]
         
-        return self.cards.question(None, user_id, dev_card, mod_card, error_card, "A")
+        return self.cards.accusation(room, dev_card, mod_card, error_card, user_id)
