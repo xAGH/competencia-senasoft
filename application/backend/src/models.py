@@ -19,7 +19,7 @@ class Model:
         except Exception:
             raise Exception
 
-    def fetch_all(self, sql: str, as_dict=True, *args):
+    def fetch_all(self, sql: str, as_dict=False, *args):
         try:
             cursor = self.connection.cursor(Dic) if as_dict else self.connection.cursor()
             with cursor as cur:
