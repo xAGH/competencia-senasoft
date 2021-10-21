@@ -8,11 +8,11 @@
         <strong>#</strong>
         <input type="text" id="roomInput" #roomInput placeholder="ABCDE" maxlength="5">
       </section>
-      <button class="app-btn mt-3">Unirse a una sala</button>
+      <button class="app-btn mt-3" (click)="onJoinRoom()">Unirse a una sala</button>
     </article>
     <article class="option-card modal-style">
       <div class="content"></div>
-      <button class="app-btn">Crear una sala nueva</button>
+      <button class="app-btn" (click)="onCreateRoom()">Crear una sala nueva</button>
     </article>
   </section>
 

@@ -13,4 +13,12 @@ export class HallComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onJoinRoom() {
+    console.log('Joining')
+  }
+
+  onCreateRoom() {
+    console.log('Creating')
+  }
+
 }
