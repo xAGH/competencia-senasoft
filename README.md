@@ -12,19 +12,12 @@ que se empleara para el desarrollo del mismo.
 ## 1.2. Estructura del proyecto
 
 |-competencia-senasoft
-
     |-application
-
         |-database
-
         |-backend
-
         |-frontend
-
     |-docs
-
     |-media
-
     |-temp
 
 ## 1.3. Lenguajes & Frameworks
