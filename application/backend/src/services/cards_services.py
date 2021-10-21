@@ -57,7 +57,7 @@ class Cards():
             rand: int= randint(0, len(cards) - 1)
             new_card: dict = cards.pop(rand)
             player_cards.append(new_card)
-            self.rooms[room]["players"][player]["cards"].append(new_card["id"])
+            
         return player_cards, cards
 
     def serve_cards(self, room: str) -> make_response:
@@ -72,6 +72,7 @@ class Cards():
         hidden_module = modules[randint(0, len(modules) - 1)]
         hidden_error = errors[randint(0, len(errors) - 1)]
         hidden_cards = [hidden_developer, hidden_module, hidden_error]
+        self.add_hidden_cards_to_room(hidden_cards, room)
         available_developers = self.delete_seleted_cards(developers, hidden_developer)
         available_modules = self.delete_seleted_cards(modules, hidden_module)
         available_errors = self.delete_seleted_cards(errors, hidden_error)
@@ -87,6 +88,12 @@ class Cards():
             "player3_cards": player3,
             "player4_cards": player4,
         }))
+
+    def add_hidden_cards_to_room(self, cards: dict, room: str) -> None:
+        cards_id: list = []
+        for card in cards:
+            cards_id.append(card["id"])
+        self.rooms[room]["system"]["hidden_cards"] = cards_id
 
     def question(self, dev_card, mod_card, error_card, room):
         answers = []

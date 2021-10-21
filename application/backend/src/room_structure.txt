@@ -31,7 +31,7 @@ rooms = {
             },
         ],
         "system": {
-            "hidden": [1,2,3],
+            "hidden_cards": [1,2,3],
             "isGameStarted": True,
         }
     }
