@@ -8,7 +8,6 @@ from os import getenv
 class RoomNamespace(Namespace):
 
     rooms: dict = {}
-    users_in_room: list = []
     cards_service: CardsService = CardsService()
     current_time: int = 0
     current_turn: int = None
@@ -68,30 +67,29 @@ class RoomNamespace(Namespace):
         room = data['room']
         if len(self.rooms[room]["players"]) == int(getenv("ROOMS_LIMIT")):
             self.rooms[room]["system"]["isGameStarted"] = True
-            self.current_time = GameService.get_time()
+            room_time = self.rooms[room]["system"]["room_time"] = GameService.get_time()
             self.current_turn = self.rooms[room]["players"][0]
             self.emit("game_start", {
                 "message": "Game is started",
                 "data": self.cards_service.serve_cards(),
                 "first_turn": self.current_turn,
-                "time": self.current_time
+                "time": room_time
             }, room=room)
         self.emit("game_waiting", {
             "message": "Waiting for players"
         }, room=room)
     
     def on_timeout(self, data):
-        time = data['time']
         room = data['room']
-        total_time = self.current_time - time
+        total_time = GameService.get_elapsed_seconds(self.rooms[room]["system"]["room_time"])
         if (total_time >= int(getenv('TIME_LIMIT'))):
             gen = GameService.next_turn(self.current_turn)
             self.current_turn = next(gen)
-            self.current_time = GameService.get_time()
+            new_room_time = self.rooms[room]["system"]["room_time"] = GameService.get_time()
             self.emit("game_next_turn", {
                 "message": "The next game turn",
                 "turn": self.current_turn,
-                "time": self.current_time
+                "time": new_room_time
             }, room=room)
         return
     
@@ -119,5 +117,5 @@ class RoomNamespace(Namespace):
         self.leave_room(request.sid, room)
         self.emit("user_leave", {
             "message": f"User {username} left",
-            "users": self.users_in_room
+            "users": self.rooms[room]["players"]
         }, room=room)

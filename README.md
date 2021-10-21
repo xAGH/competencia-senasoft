@@ -11,6 +11,7 @@ que se empleara para el desarrollo del mismo.
 
 ## 1.2. Estructura del proyecto
 
+~~~bash
 |-competencia-senasoft
     |-application
         |-database
@@ -19,6 +20,7 @@ que se empleara para el desarrollo del mismo.
     |-docs
     |-media
     |-temp
+~~~
 
 ## 1.3. Lenguajes & Frameworks
 
