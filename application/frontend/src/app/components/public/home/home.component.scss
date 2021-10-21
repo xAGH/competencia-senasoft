@@ -1,0 +1,16 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex:1;
+  .game-logo {
+    height: 300px;
+  }
+
+  .start-game {
+    margin-top: 2rem;
+  }
+
+
+}

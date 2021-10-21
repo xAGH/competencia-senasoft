@@ -1,0 +1,20 @@
+<main class="container">
+  <app-heading title="Lobby" subtitle="n / n jugadores"></app-heading>
+  <section class="player-section modal-style">
+    <header class="room-details">
+      <p class="label">ID de partida:</p>
+      <strong class="room-id"><span>#</span>{{roomId}}</strong>
+      <button class="app-btn icon square">
+        <i class="icon bx bxs-copy"></i>
+      </button>
+    </header>
+    <section class="player-list">
+      <app-player-badge *ngFor="let player of playerList; index as i" [playerNumber]="i"></app-player-badge>
+    </section>
+  </section>
+  <section class="btn-group">
+    <button class="app-btn">Iniciar partida</button>
+    <button class="app-btn white">Cancelar</button>
+  </section>
+</main>
+<app-footer></app-footer>

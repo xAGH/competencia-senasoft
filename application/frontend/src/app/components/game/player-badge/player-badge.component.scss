@@ -1,0 +1,18 @@
+@import 'src/styles.scss';
+
+.app-player-badge {
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+  gap:1rem;
+  border-radius: $base-round;
+
+  .bx {
+    font-size: 2em;;
+  }
+
+  .player-name {
+    flex: 1;
+    margin: 0;
+  }
+}

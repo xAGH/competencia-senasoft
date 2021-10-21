@@ -1,11 +1,23 @@
+# Importación de librerías
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from os import getenv
+from src.services.email_messages import MessageFor
 
 class Email():
 
-    def send_email(self, message, subject, email):
-
+    def send_email(self: object, message: str, subject: str, email: str) -> None:
+        """
+        Método enviar email.
+            |- Parámetros -> self: object => Objeto instanciado que llama al método.
+                             message: str => Mensaje que se enviará en el cuerpo del correo, se requiere HTMl.
+                             subject: str => Asunto del correo.
+                             email: str => Dirección de correo electrónico a donde llegará el correo.
+            |- Retorno -> None;
+            |- Función -> Envia un correo desde el email siigobugfinder@outlook.com con el mensaje, asunto y correo entregados
+                          por parámetros.
+        """
         msg = MIMEMultipart()
         msg['From'] = "siigobugfinder@outlook.com"
         msg['To'] = email
@@ -15,13 +27,22 @@ class Email():
 
         mailServer = smtplib.SMTP('smtp.live.com',587)
         mailServer.starttls()
-        mailServer.login("siigobugfinder@outlook.com","senasoft2021")
-
+        mailServer.login("siigobugfinder@outlook.com", getenv("EMAIL_PASSWORD"))
 
         mailServer.sendmail("siigobugfinder@outlook.com", email, msg.as_string())
         mailServer.close()
 
-    def confirmation_email(self, email, nickname, auth_token):
-        message = f"""<h1>Works {nickname}.\n<a href="http://localhost:4000/users/auth/{auth_token}">Confirm</a></h1>"""
+    def confirmation_email(self: object, email: str, nickname: str, auth_token: str):
+        """
+        Método email de confirmación.
+            |- Parámetros -> self: object => Objeto instanciado que llama al método.
+                             email: str => Dirección de correo electrónico a donde llegará el correo.
+                             nickname: str => Nickname con el que se identifica el jugador.
+                             auth_token: str => Token que contiene la informacion del jugador.
+            |- Retorno -> None;
+            |- Función -> Envia un correo desde el email siigobugfinder@outlook.com con el mensaje, asunto y correo entregados
+                          por parámetros.
+        """
+        message: str = MessageFor.confirmation_email(nickname, auth_token)
         subject = "Please confirm your email"
         self.send_email(message, subject, email)
