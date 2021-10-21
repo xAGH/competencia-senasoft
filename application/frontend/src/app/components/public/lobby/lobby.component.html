@@ -1,5 +1,5 @@
 <main class="container">
-  <app-heading title="Lobby" subtitle="n / n jugadores"></app-heading>
+  <app-heading title="Lobby" [subtitle]="playerList.length.toString() + ' / 4 jugadores'"></app-heading>
   <section class="player-section modal-style">
     <header class="room-details">
       <p class="label">ID de partida:</p>
@@ -9,7 +9,7 @@
       </button>
     </header>
     <section class="player-list">
-      <app-player-badge *ngFor="let player of playerList; index as i" [playerNumber]="i"></app-player-badge>
+      <app-player-badge *ngFor="let player of playerList; index as i" [playerName]="player.name" [playerNumber]="i"></app-player-badge>
     </section>
   </section>
   <section class="btn-group">
