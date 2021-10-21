@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   BASE_URL: 'http://localhost:4000',
-  websocket_endpoint: 'http://localhost:4000',
+  websocket_endpoint: 'http://localhost:4000/room',
 };
 
 /*
