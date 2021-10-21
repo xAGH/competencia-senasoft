@@ -8,7 +8,7 @@ from os import getenv
 class RoomNamespace(Namespace):
 
     rooms: dict = {}
-    cards_service: CardsService = CardsService()
+    cards_service: CardsService = CardsService(rooms)
     current_turn: int = None
 
     def on_connect(self):
@@ -53,6 +53,9 @@ class RoomNamespace(Namespace):
                 "message": "User was joined",
                 "users": room_players,
                 "you" : new_player
+            }, room=room)
+            self.send({
+                "message": f"User {username} connected in room {room}"
             }, room=room)
         except ConnectionRefusedError as cr:
             raise ConnectionRefusedError
@@ -130,6 +133,9 @@ class RoomNamespace(Namespace):
         self.emit("user_leave", {
             "message": f"User {username} left",
             "users": self.rooms[room]["players"]
+        }, room=room)
+        self.send({
+            "message": f"User {username} disconnected from room {room}"
         }, room=room)
     
     def on_disconnect(self):
