@@ -1,4 +1,4 @@
-from flask import make_response, jsonify
+from flask import make_response, jsonify, Response
 from src.models import Model
 from random import randint
 from src.namespaces.room_namespace import RoomNamespace
@@ -60,23 +60,23 @@ class Cards():
             
         return player_cards, cards
 
-    def serve_cards(self, room: str) -> make_response:
+    def serve_cards(self, room: str) -> Response:
         """
-        Metodo servir cartas.
+        Metodo repartir cartas.
             |- Parámetros -> room: str => Código de la sala.
-            |- Retorno -> make_response => Respuesta enviada en formato json.
-            |- Función -> Divide las cartas en las ocultas y la de los jugadores.
+            |- Retorno -> Response => Respuesta enviada en formato json.
+            |- Función -> Reparte las a de los jugadores y separa las que quedarán ocultas. Ambas quedan guardadas en el diccionario raiz de rooms..
         """
         developers, modules, errors = self.get_cards()
-        hidden_developer = developers[randint(0, len(developers) - 1)]
-        hidden_module = modules[randint(0, len(modules) - 1)]
-        hidden_error = errors[randint(0, len(errors) - 1)]
-        hidden_cards = [hidden_developer, hidden_module, hidden_error]
+        hidden_developer: dict= developers[randint(0, len(developers) - 1)]
+        hidden_module: dict = modules[randint(0, len(modules) - 1)]
+        hidden_error: dict = errors[randint(0, len(errors) - 1)]
+        hidden_cards: list = [hidden_developer, hidden_module, hidden_error]
         self.add_hidden_cards_to_room(hidden_cards, room)
-        available_developers = self.delete_seleted_cards(developers, hidden_developer)
-        available_modules = self.delete_seleted_cards(modules, hidden_module)
-        available_errors = self.delete_seleted_cards(errors, hidden_error)
-        cards = available_developers + available_modules + available_errors
+        available_developers: list = self.delete_seleted_cards(developers, hidden_developer)
+        available_modules: list = self.delete_seleted_cards(modules, hidden_module)
+        available_errors: list = self.delete_seleted_cards(errors, hidden_error)
+        cards: list = available_developers + available_modules + available_errors
         player1, cards = self.select_players_cards(cards, 0, room)
         player2, cards = self.select_players_cards(cards, 1, room)
         player3, cards = self.select_players_cards(cards, 2, room)
@@ -90,15 +90,32 @@ class Cards():
         }))
 
     def add_hidden_cards_to_room(self, cards: dict, room: str) -> None:
+        """
+        Método añadir cartas ocultas a la sala.
+            |- Parámetros -> cards: dict => Cartas elegidas como ocultas. 
+                             room: str => Codigo de la sala.
+            |- Retorno -> None.
+            |- Función -> Añade las cartas seleccionadas como ocultas al diccionario de la sala.
+        """
         cards_id: list = []
         for card in cards:
             cards_id.append(card["id"])
         self.rooms[room]["system"]["hidden_cards"] = cards_id
 
-    def question(self, dev_card, mod_card, error_card, room):
-        answers = []
+    def question(self, dev_card: int, mod_card: int, error_card: int, room: str) -> Response:
+        """
+        Método de pregunta.
+            |- Parámetros -> dev_card: int => Id de una carta de desarrollador.
+                             mod_card: int => Id de una carta de módulo.
+                             error_card: int => Id de una carta de error.
+                             room: str -> Código de la sala.
+            |- Retorno -> Response => Respuesta enviada en formato json.
+            |- Función -> Verifica si las cartas con las que ha hecho la pregunta un usuario, las tiene otro jugador.
+            
+        """
+        answers: list = []
 
-        players = self.rooms[room]["players"]
+        players: dict = self.rooms[room]["players"]
 
         for i in players:
 
@@ -126,7 +143,15 @@ class Cards():
             "answers": answers
         }))
     
-    def save_discover_cards(self, room, player_index, *args):
+    def save_discovered_cards(self, room: str, player_index: int, *args: int) -> Response:
+        """
+        Método guardar cartas descubiertas.
+            |- Parámetros -> room: str => Código de la sala.
+                             player_index: int => Índice del jugador.
+                             *args: int => N argumentos adicionales que corresponden a las cartas a guardar.
+            |- Retorno -> Response => Respuesta enviada en formato json.
+            |- Función -> Guarda las cartas enviadas por parámetros en la lista de cartas descubiertas del jugador correspondiente.
+        """
         for i in range(len(args)):
             self.rooms[room]["players"][player_index]["cards_discovered"].append(args[i])
         
@@ -135,10 +160,20 @@ class Cards():
             "statuscode":200
         }), 200)
 
-    def accusation(self, room, dev_card, mod_card, error_card, player):
-
-        hidden_cards = self.rooms[room]["system"]["hidden"]
-        accusation_player_cards = [dev_card, mod_card, error_card]
+    def accusation(self, room: str, dev_card: int, mod_card: int, error_card: int, player: int) -> Response:
+        """
+        Método acusación.
+            |- Parámetros -> room: str -> Código de la sala. 
+                             dev_card: int => Id de una carta de desarrollador.
+                             mod_card: int => Id de una carta de módulo.
+                             error_card: int => Id de una carta de error.
+                             player: int => Id o índice del jugador que ha hecho la acusación.
+            |- Retorno -> Response => Respuesta enviada en formato json.
+            |- Función -> Verifica las cartas ocultas definidas al inicio de la partida y las compara con las entregadas en los parámetros.
+                          Si son iguales, el jugador gana, de lo contrario, pasa el turno.
+        """
+        hidden_cards: list = self.rooms[room]["system"]["hidden"]
+        accusation_player_cards: list = [dev_card, mod_card, error_card]
 
         if hidden_cards == accusation_player_cards:
             return make_response(jsonify({
