@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable, of } from 'rxjs';
+import { UserRoomIdentity } from '../interfaces/user-room-identity';
 
 @Injectable({
   providedIn: 'root',
@@ -8,11 +9,14 @@ import { Observable, of } from 'rxjs';
 export class RoomService {
   constructor(private socket: Socket) {}
 
+  currentRoomCode?: string;
+
   joinRoom(roomCode: string): Observable<any> {
     const validCode = RoomService.isRoomCodeValid(roomCode);
     if (validCode) {
       this.socket.connect();
       return this.socket.fromEvent('connect').pipe((res) => {
+        this.currentRoomCode = roomCode;
         this.socket.emit('join', {
           'room' : roomCode
         });
@@ -28,7 +32,7 @@ export class RoomService {
     return this.socket.fromEvent('room_full');
   }
 
-  onJoinedRoom() : Observable<any> {
+  onJoinedRoom() : Observable<UserRoomIdentity> {
     return this.socket.fromEvent('user_joined');
   }
 
