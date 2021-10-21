@@ -95,8 +95,9 @@ class RoomNamespace(Namespace):
     def on_make_question(self):
         pass
 
-    def on_make_accusation(self):
-        pass
+    def on_make_accusation(self, data):
+        room = data['room']
+        acussation_info  = data['']
 
     def on_game_end(self, data):
         room = data['room']

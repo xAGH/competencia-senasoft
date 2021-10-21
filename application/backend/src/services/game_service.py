@@ -13,10 +13,18 @@ class GameService:
         for i in range(current_turn, current_turn + total_players):
             yield i % total_players
 
+    """
+        :function get_time — obtiene el tiempo actual y lo devuelve como un entero.
+    """
     @classmethod
     def get_time(cls):
         return int(time.time())
     
+    """
+        :function get_elapsed_seconds — devuelve la cantidad de segundos que hay de
+        diferencia entre un tiempo y otro dado.
+        :param @start_time — representa un tiempo existente.
+    """
     @classmethod
     def get_elapsed_seconds(cls, start_time: int):
         return int(time.time()) - start_time
