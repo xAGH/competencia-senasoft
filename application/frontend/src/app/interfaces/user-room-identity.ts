@@ -2,6 +2,6 @@ import { PlayerInfo } from "./player-info";
 import { SocketMessage } from "./socket-message";
 
 export interface UserRoomIdentity extends SocketMessage {
-  user: PlayerInfo[];
+  users: PlayerInfo[];
   you: PlayerInfo;
 }
