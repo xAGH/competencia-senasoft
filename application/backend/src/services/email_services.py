@@ -18,8 +18,9 @@ class Email():
             |- Función -> Envia un correo desde el email siigobugfinder@outlook.com con el mensaje, asunto y correo entregados
                           por parámetros.
         """
+        siigo_email = getenv("EMAIL_ACCOUNT")
         msg = MIMEMultipart()
-        msg['From'] = "siigobugfinder@outlook.com"
+        msg['From'] = siigo_email
         msg['To'] = email
         msg['Subject'] = subject
 
@@ -27,9 +28,9 @@ class Email():
 
         mailServer = smtplib.SMTP('smtp.live.com',587)
         mailServer.starttls()
-        mailServer.login("siigobugfinder@outlook.com", getenv("EMAIL_PASSWORD"))
+        mailServer.login(siigo_email, getenv("EMAIL_PASSWORD"))
 
-        mailServer.sendmail("siigobugfinder@outlook.com", email, msg.as_string())
+        mailServer.sendmail(siigo_email, email, msg.as_string())
         mailServer.close()
 
     def confirmation_email(self: object, email: str, nickname: str, auth_token: str):
