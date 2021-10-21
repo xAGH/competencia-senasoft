@@ -4,8 +4,6 @@ from src.models import Model
 from random import randint
 from src.namespaces.room_namespace import RoomNamespace
 
-# Este archivo contiene los servicios a los que pueden antender las cartas.
-
 class Cards():
     
     """Clase para proveer servicios en cuanto a acciones del juego."""
