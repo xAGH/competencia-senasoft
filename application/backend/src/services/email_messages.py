@@ -13,21 +13,24 @@ class MessageFor():
         """
 
         return f"""
-            <div 
+           <div 
             style="padding: 0%;
                 margin: 0%;
                 width: 100%;
                 height: 100%;
-                background-color: rgb(255, 255, 255);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;"
-            >
-                <h1>¡Hola {nickname}, gracias por registrarte en SiigoBugFinder!</h1>
-                <h2>Para que tengas acceso a la tabla de puntuaciones y conservar tu nickanme único, <a
-                    style="color: rgb(10, 137, 255);"
-                    href="http://localhost:4000/users/auth/{auth_token}">confirma tu cuenta</a></h2>
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                <center>
+                    <h1>¡Hola {nickname}, gracias por registrarte en SiigoBugFinder!</h1>
+                    <br><br><br>
+                    <h2>Para que tengas acceso a la tabla de puntuaciones y conservar tu nickanme único, <br><br><br><a
+                        style="color: white;
+                            padding: 10px;
+                            border-radius: 50px;
+                            background-color: rgb(10, 137, 255);
+                            font-style: none;
+                            text-decoration: none;
+                            font-size: 20px;"
+                        href="http://localhost:4000/users/auth/{auth_token}">Confirma tu cuenta</a></h2>
+                </center>
             </div>
             """
