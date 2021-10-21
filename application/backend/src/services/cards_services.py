@@ -1,7 +1,10 @@
+# Importación de librerías
 from flask import make_response, jsonify, Response
 from src.models import Model
 from random import randint
 from src.namespaces.room_namespace import RoomNamespace
+
+# Este archivo contiene los servicios a los que pueden antender las cartas.
 
 class Cards():
     
