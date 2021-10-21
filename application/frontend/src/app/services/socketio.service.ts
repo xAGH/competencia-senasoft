@@ -15,7 +15,7 @@ export class SocketioService {
     });
 
     this.socket.on('disconnect', () => {
-      console.log('disconnected from socket');
+      console.log('disconnected from socket')
     });
 
     this.socket.on('connect_error', (err) => {

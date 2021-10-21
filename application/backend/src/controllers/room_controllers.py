@@ -11,10 +11,20 @@ class RoomController(MethodView):
     def __init__(self) -> None:
         self.room_service: RoomsService = RoomsService()    
     
-    def get(self, room_code: str=None):
+    def get(self):
         if request.args.get("code") in RoomNamespace.rooms:
-            return "Room exists"
-        return "The room doesn't exists"
+            response = make_response(jsonify({
+                "statusCode": 200,
+                # Mostrar código de la sala, usuarios asociados, Cartas secretas -> ID, Cartas, Cartas descubiertas, 
+                "message": "Joining room"
+            }), 200)
+            return response
+        response = make_response(jsonify({
+            "error": True,
+            "statusCode": 404,
+            "message": "Room isn't found"
+        }), 404)
+        return response
 
     def post(self):
         if request.is_json:
