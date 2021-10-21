@@ -9,6 +9,10 @@ class RoomsService:
     def __init__(self) -> None:
         self.model: Model = Model()
 
+    """
+        :param characters_quantity — define la cantidad de carácteres que tendrá el enlace de una sala.
+        :return — devuelve una cadena hexadecimal la cual corresponde al código de la sala.
+    """
     def generate_room_code(self, characters_quantity: int=5):
         room_code: str = ""
         for i in range(characters_quantity):
@@ -20,10 +24,11 @@ class RoomsService:
         try:
             room = self.generate_room_code()
             RoomNamespace.rooms[room] = {
-                "owner": owner
-            }
+                "players": []
+            } 
             response = make_response(jsonify({
                 "room": room,
+                "message": "The new room was created",
                 "statusCode": 201
             }), 201)
             return response
