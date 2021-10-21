@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LobbyResolver } from './resolvers/lobby.resolver';
 
 const routes: Routes = [
   {
@@ -23,6 +24,9 @@ const routes: Routes = [
       import('./components/public/lobby/lobby.module').then(
         (m) => m.LobbyModule
       ),
+    resolve: {
+      roomInfo: LobbyResolver,
+    },
   },
   {
     path: '**',

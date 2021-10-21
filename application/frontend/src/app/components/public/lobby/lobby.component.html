@@ -3,7 +3,7 @@
   <section class="player-section modal-style">
     <header class="room-details">
       <p class="label">ID de partida:</p>
-      <strong class="room-id"><span>#</span>{{roomId}}</strong>
+      <strong class="room-id"><span>#</span>{{roomCode}}</strong>
       <button class="app-btn icon square">
         <i class="icon bx bxs-copy"></i>
       </button>
@@ -14,7 +14,7 @@
   </section>
   <section class="btn-group">
     <button class="app-btn">Iniciar partida</button>
-    <button class="app-btn white">Cancelar</button>
+    <button class="app-btn white" (click)="onLeaveLobby()">Cancelar</button>
   </section>
 </main>
 <app-footer></app-footer>
