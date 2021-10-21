@@ -1,7 +1,17 @@
-import { Component, ElementRef, OnInit, setTestabilityGetter, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  OnDestroy,
+  setTestabilityGetter,
+  ViewChild,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { Observer } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observer, Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
+import { UserRoomIdentity } from 'src/app/interfaces/user-room-identity';
+import { RoomSessionService } from 'src/app/services/room-session.service';
 import { RoomService } from 'src/app/services/room.service';
 
 @Component({
@@ -10,22 +20,51 @@ import { RoomService } from 'src/app/services/room.service';
   styleUrls: ['./hall.component.scss'],
   host: { class: 'full-extent' },
 })
-export class HallComponent implements OnInit {
+export class HallComponent implements OnInit, OnDestroy {
   @ViewChild('roomInput') roomInput?: ElementRef;
 
-  constructor(private socket: Socket, private roomSrv: RoomService) {}
+  constructor(
+    private socket: Socket,
+    private roomSrv: RoomService,
+    private roomSessionSrv: RoomSessionService,
+    private router: Router
+  ) {}
+
+  subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
-    const testObserver : Observer<any> = {
-      next: (res:any) => console.log(res),
+    const testObserver: Observer<any> = {
+      next: (res: any) => console.log(res),
       error: (err: any) => console.error(err),
-      complete: () => console.log('Complete')
+      complete: () => console.log('Complete'),
     };
 
-    this.roomSrv.onJoinedRoom().subscribe(testObserver);
-    this.roomSrv.onAlreadyOnRoom().subscribe(testObserver);
-    this.roomSrv.onRoomFull().subscribe(testObserver);
-    this.roomSrv.onRoomNotFound().subscribe(testObserver);
+    this.subscriptions.push(
+      this.roomSrv
+        .onJoinedRoom()
+        .pipe(
+          tap((res: UserRoomIdentity) => {
+            // Logica de inicio
+            this.roomSessionSrv.info = res;
+            this.router.navigate([
+              'lobby',
+              { code: this.roomSrv.currentRoomCode },
+            ]);
+          })
+        )
+        .subscribe(testObserver)
+    );
+    this.subscriptions.push(
+      this.roomSrv.onAlreadyOnRoom().subscribe(testObserver)
+    );
+    this.subscriptions.push(this.roomSrv.onRoomFull().subscribe(testObserver));
+    this.subscriptions.push(
+      this.roomSrv.onRoomNotFound().subscribe(testObserver)
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   validCode = false;
@@ -39,7 +78,6 @@ export class HallComponent implements OnInit {
     console.log('Joining with code:', roomCode);
     // Valido el código hexadecimal
     if (roomCode != undefined) this.roomSrv.joinRoom(roomCode);
-
   }
 
   onCreateRoom() {
