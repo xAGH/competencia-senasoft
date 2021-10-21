@@ -10,6 +10,15 @@ export class LobbyComponent implements OnInit {
 
   constructor() { }
 
+  roomId : string = 'ABCDE';
+
+  playerList = [
+    "AAA",
+    "BBB",
+    "AAA",
+    "BBB",
+  ];
+
   ngOnInit(): void {
   }
 
