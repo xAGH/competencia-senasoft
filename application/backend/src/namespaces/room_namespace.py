@@ -50,10 +50,11 @@ class RoomNamespace(Namespace):
                 return
             self.enter_room(request.sid, room=room)
             new_player = {
-                "name":username,
-                "sid":request.sid,
+                "name": username,
+                "sid": request.sid,
                 "cards": [],
-                "cards_discovered": []
+                "discovered_cards": [],
+                "connected": True
             }
             room_players.append(new_player)
             self.rooms[room]["system"] = {
@@ -139,7 +140,7 @@ class RoomNamespace(Namespace):
         room = data['room']
         username = data['username']
         players = self.rooms[room]["players"]
-        found = [player for player in players if player["nickname"] == username]
+        found = [player for player in players if player["name"] == username]
 
         # Jugador no encontrado
         if len(found) == 0: return
