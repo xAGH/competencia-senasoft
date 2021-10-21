@@ -3,25 +3,36 @@ rooms = {
         "players": [
             {
                 "cards":[4, 8, 5, 9],
-                "discover": [1, 6, 10, 11, 12, 15],
+                "discovered_cards": [1, 6, 10, 11, 12, 15],
                 "score": 1/12 * 100,
                 "nickname": "Nickname"
+                "conected": True
             },
             {
                 "cards":[4, 8, 5, 9],
-                "discover": [1]
+                "discovered_cards": [1, 6, 10, 11, 12, 15],
+                "score": 1/12 * 100,
+                "nickname": "Nickname"
+                "conected": True
             },
             {
                 "cards":[4, 8, 5, 9],
-                "discover": [2]
+                "discovered_cards": [1, 6, 10, 11, 12, 15],
+                "score": 1/12 * 100,
+                "nickname": "Nickname"
+                "conected": True
             },
             {
                 "cards":[4, 8, 5, 9],
-                "discover": [3]
+                "discovered_cards": [1, 6, 10, 11, 12, 15],
+                "score": 1/12 * 100,
+                "nickname": "Nickname"
+                "conected": True
             },
         ],
         "system": {
-            "ocultas": [1,2,3]
+            "hidden": [1,2,3],
+            "isGameStarted": True,
         }
     }
 }
