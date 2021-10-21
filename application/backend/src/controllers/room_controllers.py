@@ -14,15 +14,11 @@ class RoomController(MethodView):
     def get(self):
         if request.args.get("code") in RoomNamespace.rooms:
             response = make_response(jsonify({
-                "statusCode": 200,
-                # Mostrar código de la sala, usuarios asociados, Cartas secretas -> ID, Cartas, Cartas descubiertas, 
-                "message": "Joining room"
+                "exists": True
             }), 200)
             return response
         response = make_response(jsonify({
-            "error": True,
-            "statusCode": 404,
-            "message": "Room isn't found"
+            "exists": False
         }), 404)
         return response
 
