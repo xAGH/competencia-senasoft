@@ -1,0 +1,38 @@
+rooms = {
+    "Af673C": {
+        "players": [
+            {
+                "cards":[4, 8, 5, 9],
+                "discovered_cards": [1, 6, 10, 11, 12, 15],
+                "score": 1/12 * 100,
+                "nickname": "Nickname"
+                "conected": True
+            },
+            {
+                "cards":[4, 8, 5, 9],
+                "discovered_cards": [1, 6, 10, 11, 12, 15],
+                "score": 1/12 * 100,
+                "nickname": "Nickname"
+                "conected": True
+            },
+            {
+                "cards":[4, 8, 5, 9],
+                "discovered_cards": [1, 6, 10, 11, 12, 15],
+                "score": 1/12 * 100,
+                "nickname": "Nickname"
+                "conected": True
+            },
+            {
+                "cards":[4, 8, 5, 9],
+                "discovered_cards": [1, 6, 10, 11, 12, 15],
+                "score": 1/12 * 100,
+                "nickname": "Nickname"
+                "conected": True
+            },
+        ],
+        "system": {
+            "hidden_cards": [1,2,3],
+            "isGameStarted": True,
+        }
+    }
+}
