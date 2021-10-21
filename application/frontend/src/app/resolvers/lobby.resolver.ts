@@ -25,7 +25,7 @@ export class LobbyResolver implements Resolve<boolean> {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     if (this.roomSessionSrv.info == undefined) return of(false);
-    const roomCode = route.paramMap.get('code');
+    const roomCode = route.queryParamMap.get('code');
     // Si el código está indefinido, retorno
     if (roomCode == undefined) {
       this.router.navigateByUrl('home');

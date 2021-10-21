@@ -48,8 +48,9 @@ export class HallComponent implements OnInit, OnDestroy {
             this.roomSessionSrv.info = res;
             this.router.navigate([
               'lobby',
-              { code: this.roomSrv.currentRoomCode },
+              {queryParams: { code: this.roomSrv.currentRoomCode }},
             ]);
+
           })
         )
         .subscribe(testObserver)
