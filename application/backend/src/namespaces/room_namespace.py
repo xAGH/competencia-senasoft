@@ -9,7 +9,6 @@ class RoomNamespace(Namespace):
 
     rooms: dict = {}
     cards_service: CardsService = CardsService()
-    current_time: int = 0
     current_turn: int = None
 
     def on_connect(self):
@@ -18,10 +17,7 @@ class RoomNamespace(Namespace):
         except ConnectionRefusedError:
             raise ConnectionRefusedError
         except Exception:
-            raise Exception
-    
-    def on_disconnect(self):
-        print("Disconnected", request.sid)   
+            raise Exception   
     
     def on_join(self, data):
         room = data['room']
@@ -119,3 +115,6 @@ class RoomNamespace(Namespace):
             "message": f"User {username} left",
             "users": self.rooms[room]["players"]
         }, room=room)
+    
+    def on_disconnect(self):
+        print("Disconnected", request.sid)   
