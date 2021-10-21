@@ -4,7 +4,7 @@
     <header class="room-details">
       <p class="label">ID de partida:</p>
       <strong class="room-id"><span>#</span>{{roomCode}}</strong>
-      <button class="app-btn icon square">
+      <button class="app-btn icon square" (click)="onCopyRoomID()">
         <i class="icon bx bxs-copy"></i>
       </button>
     </header>

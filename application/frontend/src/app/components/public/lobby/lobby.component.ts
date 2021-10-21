@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ClipboardService } from 'ngx-clipboard';
 import { Subscription } from 'rxjs';
 import { PlayerInfo } from 'src/app/interfaces/player-info';
 import { RoomSessionService } from 'src/app/services/room-session.service';
@@ -18,7 +19,8 @@ export class LobbyComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private roomSessionSrv: RoomSessionService,
-    private roomSrv: RoomService
+    private roomSrv: RoomService,
+    private cliboard: ClipboardService
   ) {}
 
   playerList: PlayerInfo[] = [];
@@ -37,12 +39,16 @@ export class LobbyComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(
         this.roomSrv.onLeftRoom().subscribe((res) => {
-          this.playerList = res.users
+          this.playerList = res.users;
         })
       );
     } else {
       this.router.navigateByUrl('');
     }
+  }
+
+  onCopyRoomID() {
+    if (this.roomCode != null) this.cliboard.copy(this.roomCode);
   }
 
   onLeaveLobby() {
