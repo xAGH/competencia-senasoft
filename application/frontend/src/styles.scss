@@ -42,6 +42,13 @@ body {
 
 * {
   font-family: "Sora", sans-serif;
+
+  &:focus {
+    outline-color: rgb(24, 83, 179);
+    outline-offset: 1px;
+    outline-style: auto;
+    outline-width: 16px;
+  }
 }
 
 .full-extent {
