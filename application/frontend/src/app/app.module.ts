@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CardComponent } from './components/shared/card/card.component';
-import { SharedModule } from './src/app/components/shared/shared.module';
+import { SharedModule } from './components/shared/shared.module';
 
 @NgModule({
   declarations: [
