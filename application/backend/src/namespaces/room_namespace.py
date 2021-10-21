@@ -8,7 +8,7 @@ from os import getenv
 class RoomNamespace(Namespace):
 
     rooms: dict = {}
-    cards_service: CardsService = CardsService(rooms)
+    cards_service: CardsService = CardsService()
     current_turn: int = None
 
     def on_connect(self):
