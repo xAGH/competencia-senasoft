@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-hall',
@@ -8,13 +8,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HallComponent implements OnInit {
 
+  @ViewChild('roomInput') roomInput? : ElementRef;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  validCode = false;
+
+  private getRoomCode() : string | undefined{
+    return this.roomInput?.nativeElement.value ?? undefined;
+  }
+
   onJoinRoom() {
-    console.log('Joining')
+    const roomCode : string | undefined = this.getRoomCode()
+    console.log('Joining with code:', roomCode);
+    const regex = /[0-9A-F]{5}$/i;
+    // Valido el código hexadecimal
+    this.validCode = roomCode != undefined && regex.test(roomCode);
+    if (this.validCode){
+      console.log('VALID!')
+    }
   }
 
   onCreateRoom() {
