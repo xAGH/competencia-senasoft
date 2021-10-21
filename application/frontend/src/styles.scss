@@ -50,6 +50,20 @@ body {
   height: 100%;
 }
 
+.wabble {
+  animation: wabble 4s infinite forwards ease-in-out;
+}
+
+@keyframes wabble {
+  0%, 100% {
+    transform: rotate(5deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(-5deg) translate(1rem);
+  }
+}
+
 .app-btn {
   position: relative;
   border-radius: $button-round-value;
