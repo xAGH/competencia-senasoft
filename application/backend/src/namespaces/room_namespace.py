@@ -107,8 +107,15 @@ class RoomNamespace(Namespace):
     def on_game_in_course(self):
         pass
 
+    """
+        :method @on_make_question —  se encarga de llamar al servicio de crear una nueva pregunta
+    """
     def on_make_question(self, data):
         room = data['room']
+        created_question = self.cards_service.question(data['dev_card'], data['mod_card'], data['error_card'], data['room'])
+        self.emit("new_question", {
+            "system_answer": created_question
+        }, room=room)
 
     def on_throw_accusation(self, data):
         room = data['room']
