@@ -3,6 +3,7 @@ from flask import json, make_response, jsonify
 from pymysql import err
 from src.models import Model
 from random import randint
+from src.namespaces.room_namespace import RoomNamespace
 
 class Cards():
     
@@ -50,142 +51,42 @@ class Cards():
             "player4_cards": player4,
         }))
 
-    def question(self, sid, user_id, dev_card, mod_card, error_card):
-        data = {
-  "hidden_cards": [
-    {
-      "card_name": "Juanita",
-      "category_name": "developer",
-      "id": 4
-    },
-    {
-      "card_name": "Comprobante Contable",
-      "category_name": "module",
-      "id": 11
-    },
-    {
-      "card_name": "Null pointer",
-      "category_name": "error",
-      "id": 17
-    }
-  ],
-  "players":{
-      "player1_cards": [
-          1,
-    {
-      "card_name": "Recibos",
-      "category_name": "module",
-      "id": 10
-    },
-    {
-      "card_name": "Contabilidad",
-      "category_name": "module",
-      "id": 13
-    },
-    {
-      "card_name": "404",
-      "category_name": "error",
-      "id": 14
-    },
-    {
-      "card_name": "Stack Overflow",
-      "category_name": "error",
-      "id": 15
-    }
-  ],
-  "player2_cards": [2, 
-    {
-      "card_name": "Encoding error",
-      "category_name": "error",
-      "id": 19
-    },
-    {
-      "card_name": "Syntax error",
-      "category_name": "error",
-      "id": 18
-    },
-    {
-      "card_name": "Facturación",
-      "category_name": "module",
-      "id": 9
-    },
-    {
-      "card_name": "Usuarios",
-      "category_name": "module",
-      "id": 12
-    }
-  ],
-  "player3_cards": [3, 
-    {
-      "card_name": "Pedro",
-      "category_name": "developer",
-      "id": 1
-    },
-    {
-      "card_name": "Antonio",
-      "category_name": "developer",
-      "id": 5
-    },
-    {
-      "card_name": "Juan",
-      "category_name": "developer",
-      "id": 2
-    },
-    {
-      "card_name": "Carolina",
-      "category_name": "developer",
-      "id": 6
-    }
-  ],
-  "player4_cards": [4, 
-    {
-      "card_name": "Manuel",
-      "category_name": "developer",
-      "id": 7
-    },
-    {
-      "card_name": "Memory out of range",
-      "category_name": "error",
-      "id": 16
-    },
-    {
-      "card_name": "Carlos",
-      "category_name": "developer",
-      "id": 3
-    },
-    {
-      "card_name": "Nómina",
-      "category_name": "module",
-      "id": 8
-    }
-  ]
-  }
-}
+    def question(self, dev_card, mod_card, error_card, room):
         answers = []
-        count = 0
-        
-        for i in data["players"]:
-            for j in range(1, len(data["players"][i])):
-                if data["players"][i][j]["id"] == dev_card:
+
+        players = RoomNamespace.rooms[room]["players"]
+
+        for i in players:
+
+            for j in range(len(i["cards"])):
+                
+                if i["cards"][j] == dev_card:
                     answers.append({
-                        "player": data["players"][i][0],
+                        "player": i["order"],
                         "dev_card": dev_card
                     })
-                    count += 1
 
-                if data["players"][i][j]["id"] == mod_card:
+                if i["cards"][j] == mod_card:
                     answers.append({
-                        "player": data["players"][i][0],
+                        "player": i["order"],
                         "mod_card": mod_card
                     })
-                    count += 1
 
-                if data["players"][i][j]["id"] == error_card:
+                if i["cards"][j] == error_card:
                     answers.append({
-                        "player": data["players"][i][0],
+                        "player": i["order"],
                         "error_card": error_card
                     })
-                    count += 1
+        
         return make_response(jsonify({
             "answers": answers
         }))
+    
+    def save_discover_cards(self, room, player_index, *args):
+        for i in range(len(args)):
+            RoomNamespace.rooms[room]["players"][player_index]["cards_discovered"].append(args[i])
+        
+        return make_response(jsonify({
+            "message": "User discovered cars append in his list.",
+            "statuscode":200
+        }), 200)

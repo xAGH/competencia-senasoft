@@ -17,4 +17,4 @@ class CardsController(MethodView):
         mod_card = request.json["mod_card"]
         error_card = request.json["error_card"]
         
-        return self.cards.question(None, user_id, dev_card, mod_card, error_card)
+        return self.cards.question(None, user_id, dev_card, mod_card, error_card, "A")
