@@ -1,0 +1,17 @@
+.app-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #B5B5B5;
+  }
+}
