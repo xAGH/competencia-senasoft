@@ -1,39 +1,48 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, setTestabilityGetter, ViewChild } from '@angular/core';
+import { Socket } from 'ngx-socket-io';
+import { Observer } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { RoomService } from 'src/app/services/room.service';
 
 @Component({
   selector: 'app-hall',
   templateUrl: './hall.component.html',
   styleUrls: ['./hall.component.scss'],
-  host: {'class': 'full-extent'}
+  host: { class: 'full-extent' },
 })
 export class HallComponent implements OnInit {
+  @ViewChild('roomInput') roomInput?: ElementRef;
 
-  @ViewChild('roomInput') roomInput? : ElementRef;
-
-  constructor() { }
+  constructor(private socket: Socket, private roomSrv: RoomService) {}
 
   ngOnInit(): void {
+    const testObserver : Observer<any> = {
+      next: (res:any) => console.log(res),
+      error: (err: any) => console.error(err),
+      complete: () => console.log('Complete')
+    };
+
+    this.roomSrv.onJoinedRoom().subscribe(testObserver);
+    this.roomSrv.onAlreadyOnRoom().subscribe(testObserver);
+    this.roomSrv.onRoomFull().subscribe(testObserver);
+    this.roomSrv.onRoomNotFound().subscribe(testObserver);
   }
 
   validCode = false;
 
-  private getRoomCode() : string | undefined{
+  private getRoomCode(): string | undefined {
     return this.roomInput?.nativeElement.value ?? undefined;
   }
 
   onJoinRoom() {
-    const roomCode : string | undefined = this.getRoomCode()
+    const roomCode: string | undefined = this.getRoomCode();
     console.log('Joining with code:', roomCode);
-    const regex = /[0-9A-F]{5}$/i;
     // Valido el código hexadecimal
-    this.validCode = roomCode != undefined && regex.test(roomCode);
-    if (this.validCode){
-      console.log('VALID!')
-    }
+    if (roomCode != undefined) this.roomSrv.joinRoom(roomCode);
+
   }
 
   onCreateRoom() {
-    console.log('Creating')
+    console.log('Creating');
   }
-
 }
