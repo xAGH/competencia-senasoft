@@ -2,6 +2,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { ClipboardModule } from 'ngx-clipboard';
 import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 
@@ -23,6 +24,7 @@ import { ApiInterceptor } from './interceptors/api.interceptor';
       options: { autoConnect: false },
     }),
     HttpClientModule,
+    ClipboardModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
