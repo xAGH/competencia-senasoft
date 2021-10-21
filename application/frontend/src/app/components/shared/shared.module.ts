@@ -4,12 +4,14 @@ import { CardComponent } from 'src/app/components/shared/card/card.component';
 import { SpinnerComponent } from 'src/app/components/shared/spinner/spinner.component';
 import { FooterComponent } from './footer/footer.component';
 import { RouterModule } from '@angular/router';
+import { HeadingComponent } from './heading/heading.component';
 
 @NgModule({
   declarations: [
     CardComponent,
     SpinnerComponent,
     FooterComponent,
+    HeadingComponent,
   ],
   imports: [
     CommonModule,
@@ -19,6 +21,7 @@ import { RouterModule } from '@angular/router';
     CardComponent,
     SpinnerComponent,
     FooterComponent,
+    HeadingComponent,
   ]
 })
 export class SharedModule { }
