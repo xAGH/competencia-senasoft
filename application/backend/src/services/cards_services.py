@@ -2,9 +2,9 @@
 from flask import make_response, jsonify, Response
 from src.models import Model
 from random import randint
-from src.namespaces.room_namespace import RoomNamespace
+from src.namespaces.room_namespace import RoomNamespace 
 
-class Cards():
+class CardsService:
     
     """Clase para proveer servicios en cuanto a acciones del juego."""
 
@@ -178,7 +178,7 @@ class Cards():
                              mod_card: int => Id de una carta de módulo.
                              error_card: int => Id de una carta de error.
                              player: int => Id o índice del jugador que ha hecho la acusación.
-            |- Retorno -> Response => Respuesta enviada en formato json.
+            |- Retorno -> True o False dependiendo de la validaciónTrue o False dependiendo de la validación
             |- Función -> Verifica las cartas ocultas definidas al inicio de la partida y las compara con las entregadas en los parámetros.
                           Si son iguales, el jugador gana, de lo contrario, pasa el turno.
         """
@@ -186,12 +186,6 @@ class Cards():
         accusation_player_cards: list = [dev_card, mod_card, error_card]
 
         if hidden_cards == accusation_player_cards:
-            return make_response(jsonify({
-                "win": True,
-                "player":  player
-            }))
+            return True
 
-        return make_response(jsonify({
-            "win": False,
-            "player":  player
-        }))
+        return False
