@@ -19,6 +19,13 @@ class RoomNamespace(Namespace):
         except Exception:
             raise Exception   
     
+    def on_message(self, data):
+        room = data['room']
+        message = data['message']
+        self.emit("chat_message", {
+            "message": message
+        }, room=room)
+
     def on_join(self, data):
         room = data['room']
         if (not room in self.rooms):
@@ -43,12 +50,17 @@ class RoomNamespace(Namespace):
                 return
             self.enter_room(request.sid, room=room)
             new_player = {
-                "name":username,
-                "sid":request.sid,
+                "name": username,
+                "sid": request.sid,
                 "cards": [],
-                "cards_discovered": []
+                "discovered_cards": [],
+                "connected": True
             }
             room_players.append(new_player)
+            self.rooms[room]["system"] = {
+                "hidden_cards": [],
+                "isGameStarted": None
+            }
             self.emit("user_joined", {
                 "message": "User was joined",
                 "users": room_players,
@@ -95,8 +107,8 @@ class RoomNamespace(Namespace):
     def on_game_in_course(self):
         pass
 
-    def on_make_question(self):
-        pass
+    def on_make_question(self, data):
+        room = data['room']
 
     def on_throw_accusation(self, data):
         room = data['room']
@@ -127,9 +139,14 @@ class RoomNamespace(Namespace):
     def on_leave(self, data):
         room = data['room']
         username = data['username']
-        self.rooms[room]["players"].index(username)
-        self.rooms[room]["players"].remove(username)
-        self.leave_room(request.sid, room)
+        players = self.rooms[room]["players"]
+        found = [player for player in players if player["name"] == username]
+
+        # Jugador no encontrado
+        if len(found) == 0: return
+        player = found[0]
+        players.remove(player)
+        self.leave_room(player["sid"], room)
         self.emit("user_leave", {
             "message": f"User {username} left",
             "users": self.rooms[room]["players"]
