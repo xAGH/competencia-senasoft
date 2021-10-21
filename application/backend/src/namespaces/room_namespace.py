@@ -54,6 +54,9 @@ class RoomNamespace(Namespace):
                 "users": room_players,
                 "you" : new_player
             }, room=room)
+            self.send({
+                "message": f"User {username} connected in room {room}"
+            }, room=room)
         except ConnectionRefusedError as cr:
             raise ConnectionRefusedError
         except Exception as e:
@@ -130,6 +133,9 @@ class RoomNamespace(Namespace):
         self.emit("user_leave", {
             "message": f"User {username} left",
             "users": self.rooms[room]["players"]
+        }, room=room)
+        self.send({
+            "message": f"User {username} disconnected from room {room}"
         }, room=room)
     
     def on_disconnect(self):
