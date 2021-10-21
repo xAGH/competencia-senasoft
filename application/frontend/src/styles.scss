@@ -44,6 +44,12 @@ body {
   font-family: "Sora", sans-serif;
 }
 
+.full-extent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .app-btn {
   position: relative;
   border-radius: $button-round-value;
