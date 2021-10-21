@@ -1,5 +1,7 @@
 from os import getenv
 import time
+from src.services.provide_names import *
+from random import choice
 
 class GameService:
 
@@ -28,3 +30,10 @@ class GameService:
     @classmethod
     def get_elapsed_seconds(cls, start_time: int):
         return int(time.time()) - start_time
+
+    @classmethod
+    def generate_name(cls):
+        subject = choice(objects)
+        adjective = choice(adjectives)
+        number = choice(numbers)
+        return f"{adjective}{subject}{number}"
