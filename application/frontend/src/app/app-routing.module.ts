@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LobbyResolver } from './resolvers/lobby.resolver';
 
 const routes: Routes = [
   {
@@ -17,7 +18,16 @@ const routes: Routes = [
     loadChildren: () =>
       import('./components/public/hall/hall.module').then((m) => m.HallModule),
   },
-  { path: 'lobby', loadChildren: () => import('./components/public/lobby/lobby.module').then(m => m.LobbyModule) },
+  {
+    path: 'lobby',
+    loadChildren: () =>
+      import('./components/public/lobby/lobby.module').then(
+        (m) => m.LobbyModule
+      ),
+    resolve: {
+      roomInfo: LobbyResolver,
+    },
+  },
   {
     path: '**',
     loadChildren: () =>
