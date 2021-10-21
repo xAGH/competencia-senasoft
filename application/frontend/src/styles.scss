@@ -14,6 +14,8 @@ $siigo-blue: #00aaff;
 $error-color: #FF6719;
 $shadow-color: rgba(0, 0, 0, 0.25);
 
+$disabled-color: #C4C4C4;
+
 // Player colors
 $player-color-1: #F2CC46;
 $player-color-2: #6CDF12;
@@ -83,19 +85,20 @@ body {
   transition: all 100ms;
 
   &.icon {
-    $round-size: 3.5rem;
+    $round-size: 3.25rem;
     width: $round-size;
     height: $round-size;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
 
     &.square {
       border-radius: $button-round-square;
     }
 
     &>* {
-      font-size: 1.75rem;
+      font-size: 1.25em;
     }
   }
 
