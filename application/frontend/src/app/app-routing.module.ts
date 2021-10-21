@@ -17,6 +17,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./components/public/hall/hall.module').then((m) => m.HallModule),
   },
+  { path: 'lobby', loadChildren: () => import('./components/public/lobby/lobby.module').then(m => m.LobbyModule) },
   {
     path: '**',
     loadChildren: () =>
