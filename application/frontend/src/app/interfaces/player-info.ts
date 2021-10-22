@@ -5,4 +5,5 @@ export interface PlayerInfo {
   sid: string;
   cards: GameCard[];
   cards_discovered: GameCard[];
+  connected: boolean;
 }

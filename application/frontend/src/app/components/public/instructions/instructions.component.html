@@ -1,0 +1,58 @@
+<main class="container">
+  <app-heading title="Instrucciones">
+  </app-heading>
+  <hr>
+  <h2 class="mt-5">¿Cómo se inicia una partida?</h2>
+  <p>
+    El juego no se puede iniciar hasta que se encuentren 4 jugadores en la sala.
+    Una vez se encuentren 4 jugadores en la sala, el anfitrión podrá iniciar
+    la partida.
+  </p>
+
+  <h2>Sistema de turnos</h2>
+  <p>Los turnos se definen según el orden de llegada de los jugadores.</p>
+
+  <h2>¿Cómo se juega?</h2>
+  <p>
+    El juego consta de 19 cartas, 6 cartas de <span class="err">errores</span>, 6 cartas de <span class="mod">módulo</span> y 7 cartas
+    de <span class="dev">programadores</span>. Una vez iniciada la partida, se elije aleatoriamente 1 carta
+    de cada categoria las cuales serán las cartas que debe adivinar el jugador
+    para ganar. Las 16 cartas restantes se dividen de a 4 aleatoriamente a cada jugador.
+  </p>
+
+  <p>
+    En partida, contarás con un cuaderno de notas y las 4 cartas que te han
+    repartido. Cuando sea tu turno, tendrás dos opciones:
+  </p>
+
+  <ol>
+    <li>
+      <p>
+        Preguntar: Al preguntar, eliges una carta de programador, una carta de módulo y una carta
+        de error(Estas no pueden ser de las que te han repartido). Esta pregunta se le hará
+        a cada jugador en orden de turnos, si éste no tiene ninguna de las cartas que has
+        preguntado, se te avisará que ese jugador no tiene ninguna carta, de lo contrario,
+        estará en la obligación de exponerte solo a ti la carta, dado el caso que tenga más
+        de una carta de las que has preguntado, el jugador en cuestión tendrá que elegir alguna
+        de esas cartas y exponertela. Este proceso se repite por todoslos jugadores y las cartas
+        que "descubras" de los otros jugadores se añadirán automaticamente a tus notas.
+      </p>
+    </li>
+    <li>
+      <p>
+        Acusar: Al acusar, eliges una carta de programador, una carta de módulo y una carta
+        de error(Estas no pueden ser de las que te han repartido). Las cartas dadas se comprobarán
+        con las cartas ocultas y si son las mismas, ganas el juego, de lo contrario, pierdes el turno.
+      </p>
+    </li>
+  </ol>
+
+  <h1>¿Cómo gano?</h1>
+  <p>Gana el jugador que adivine que programador cometió en qué módulo el error.</p>
+
+  <strong>¡La empresa te necesita, Halla el Bug!</strong>
+</main>
+<section class="d-flex justify-content-center">
+  <button class="app-btn" routerLink="/home">Estoy listo</button>
+</section>
+<app-footer></app-footer>

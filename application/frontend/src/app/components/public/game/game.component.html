@@ -1,0 +1,31 @@
+<main class="container app-game">
+  <section class="top-section">
+    <section class="game-stats" *ngIf="playerName.length != 0">
+      <strong>Tu eres <span [ngClass]="'player-color-'+(playerNumber+1)">{{playerName}}</span></strong>
+    </section>
+    <section class="modal-section">
+      <!-- <app-ingame-modal></app-ingame-modal> -->
+    </section>
+  </section>
+  <div class="section-wrapper">
+    <section class="card-section">
+      <app-card [reverse]="showReverse" *ngFor="let id of playerCards" [cardTitle]="getCardTitle(id)"
+        [cardType]="getCardType(id)" [cardImgUrl]="getCardUrl(id)"></app-card>
+    </section>
+  </div>
+</main>
+<aside class="game-aside">
+  <header>
+    <img src="assets/logos/game_logo.png" alt="">
+  </header>
+  <div class="space"></div>
+  <section class="btn-group">
+    <button (click)="onChatOpen()" class="chat-btn app-btn icon">
+      <i class="bx bxs-chat"></i>
+    </button>
+  </section>
+</aside>
+<div class="backdrop" [ngClass]="{'hidden' : !showChat }"></div>
+<app-chat-view class="chat-view" (send)="onChatMessage($event)" (close)="onChatClose()" [ngClass]="{'hidden': !showChat}">
+  <app-chat-message *ngFor="let msg of chatMessages" [playerName]="resolvePlayerName(msg.playerID)" [playerID]="msg.playerID" [message]="msg.message" [isSystemMessage]="msg.isSystemMessage"></app-chat-message>
+</app-chat-view>

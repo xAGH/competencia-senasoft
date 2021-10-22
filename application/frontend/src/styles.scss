@@ -84,6 +84,11 @@ body {
   box-shadow: $shadow-profile;
   transition: all 100ms;
 
+  &[disabled] {
+    background-color: #EFEFEF;
+    color: #CDCDCD;
+  }
+
   &.icon {
     $round-size: 3.25rem;
     width: $round-size;
@@ -175,4 +180,8 @@ input:not([type=button]) {
 
 .bold-2 {
   font-weight: 800;
+}
+
+.lock-scroll-x {
+  overflow-x: hidden;
 }

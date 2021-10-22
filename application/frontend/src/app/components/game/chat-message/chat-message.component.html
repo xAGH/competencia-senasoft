@@ -1,0 +1,6 @@
+<article class="chat-message">
+  <div class="player-message" [ngClass]="{'system-message': isSystemMessage}">
+    <p><span class="player-name" [ngClass]="resolveClassStyle()">{{playerName}}</span>: {{message}}</p>
+  </div>
+  <ng-template #systemBlock></ng-template>
+</article>

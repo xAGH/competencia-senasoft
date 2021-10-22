@@ -8,6 +8,29 @@
   border: 10px solid white;
   background: linear-gradient(142.56deg, #d75feb 1.22%, #9120b9 95.46%);
 
+  position: relative;
+  overflow: hidden;
+
+  .selection-wrapper {
+    background-color: rgba(255,255,255,0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    .bx {
+      position: absolute;
+      font-size: 2em;
+      background-color: $player-color-2;
+      color: white;
+      padding: 0;
+      border-radius: 0.25rem;
+      outline: 3px solid $player-color-2;
+      bottom: 0.5rem;
+      right: 0.5rem;
+    }
+  }
+
   &.dev {
     background: #FF6719;
   }
@@ -61,6 +84,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      text-align: center;
+      line-height: 1.25rem;
 
       p {
         margin: 0;

@@ -1,0 +1,12 @@
+@import 'src/styles.scss';
+
+.game-modal {
+  display: flex;
+  flex-direction: column;
+  border-radius: $base-round;
+  padding: 1rem 1.5rem;
+
+  .hl {
+    color: $error-color;
+  }
+}

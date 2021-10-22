@@ -1,0 +1,53 @@
+@import 'src/styles.scss';
+
+:host{
+  display: flex;
+  flex-direction: column;
+}
+
+header, footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-section {
+  flex: 1;
+  overflow: auto;
+}
+
+header {
+  .bx {
+    position: absolute;
+    left: 2rem;
+    color: $siigo-blue;
+    font-size: 1.75rem;
+  }
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  .message-section {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .message-input {
+      width: 100%;
+    }
+
+    .close-btn {
+      pointer-events: all;
+    }
+
+    .send-btn {
+      width: 5rem;
+      height: 2.5rem;
+      background-color: $player-color-2;
+      .bx {
+        font-size: 1em;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@import 'src/styles.scss';
+
+.container {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+
+  h1,
+  h2,
+  h3 {
+    margin-top: 3rem;
+  }
+
+  .dev {
+    color: #ff6719;
+    font-weight: bold;
+  }
+
+  .mod {
+    color: $siigo-blue;
+    font-weight: bold;
+  }
+
+  .err {
+    color: #e50000;
+    font-weight: bold;
+  }
+}

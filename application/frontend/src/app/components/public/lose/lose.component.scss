@@ -1,0 +1,19 @@
+@import "src/styles.scss";
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex:1;
+  .heading {
+    font-size: 7rem;
+    color: $error-color;
+    font-weight: bolder;
+  }
+
+  .caption {
+    font-size: 1.5rem;
+    margin-bottom: 5rem;
+  }
+}

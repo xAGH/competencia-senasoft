@@ -9,6 +9,7 @@ export class RoomSessionService {
   constructor() { }
 
   info? : UserRoomIdentity;
+  userNumber?: number = -1;
 
   wipe() : void {
     this.info = undefined;

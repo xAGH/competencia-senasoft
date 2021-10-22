@@ -1,0 +1,15 @@
+<header>
+  <i class="bx bx-chat"></i>
+  <app-heading title="Chat"></app-heading>
+</header>
+<hr>
+<section class="chat-section">
+  <ng-content></ng-content>
+</section>
+<footer>
+  <div class="message-section">
+    <input class="message-input" type="text" #messageInput id="">
+    <button (click)="emitSend()" class="send-btn app-btn icon"><i class="bx bxs-send"></i></button>
+  </div>
+  <button (click)="emitClose()" class="app-btn close-btn">Cerrar</button>
+</footer>
