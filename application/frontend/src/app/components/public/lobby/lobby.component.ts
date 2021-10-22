@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClipboardService } from 'ngx-clipboard';
 import { Subscription } from 'rxjs';
 import { PlayerInfo } from 'src/app/interfaces/player-info';
+import { GameService } from 'src/app/services/game.service';
 import { RoomSessionService } from 'src/app/services/room-session.service';
 import { RoomService } from 'src/app/services/room.service';
 
@@ -20,26 +21,57 @@ export class LobbyComponent implements OnInit, OnDestroy {
     private router: Router,
     private roomSessionSrv: RoomSessionService,
     private roomSrv: RoomService,
-    private cliboard: ClipboardService
+    private cliboard: ClipboardService,
+    private gameSrv: GameService
   ) {}
 
   playerList: PlayerInfo[] = [];
   subscriptions: Subscription[] = [];
+  isOwner = false;
 
   ngOnInit(): void {
-    this.roomCode = this.route.snapshot.paramMap.get('code');
+    this.roomCode = this.route.snapshot.queryParamMap.get('code');
+    console.log(this.roomCode, 'ROOM');
     if (this.roomCode) {
       const playerList = this.roomSessionSrv.info;
-      if (playerList?.users != undefined) this.playerList = playerList?.users;
+      if (playerList?.users == undefined) {
+        this.router.navigateByUrl('home');
+        return
+      }
+
+      this.playerList = playerList?.users;
+      this.isOwner = this.roomSrv.getSocketID() == this.playerList[0].sid;
       this.subscriptions.push(
         this.roomSrv.onJoinedRoom().subscribe((res) => {
           this.playerList = res.users;
+          this.isOwner = this.roomSrv.getSocketID() == this.playerList[0].sid;
+          console.log(this.roomSrv.getSocketID(), this.playerList);
         })
       );
 
       this.subscriptions.push(
         this.roomSrv.onLeftRoom().subscribe((res) => {
           this.playerList = res.users;
+          this.isOwner = this.roomSrv.getSocketID() == this.playerList[0].sid;
+        })
+      );
+
+      this.subscriptions.push(
+        this.roomSrv.onGameStart().subscribe((res) => {
+          console.log(res);
+          this.gameSrv.currentTurn = res.turn;
+          const player_index = this.playerList.findIndex(
+            (el) => el.sid == this.roomSessionSrv.info?.you.sid
+          );
+          console.log(
+            this.playerList,
+            player_index,
+            this.roomSessionSrv.info?.you.sid
+          );
+          this.gameSrv.playerCards = res.data.player_cards[player_index];
+          this.gameSrv.hiddenCards = res.data.hidden_cards;
+          this.gameSrv.currentTurn = res.firstTurn;
+          this.router.navigateByUrl('game');
         })
       );
     } else {
@@ -58,6 +90,10 @@ export class LobbyComponent implements OnInit, OnDestroy {
       this.roomSessionSrv.wipe();
     }
     this.router.navigateByUrl('home');
+  }
+
+  onStartGame() {
+    if (this.roomCode != null) this.roomSrv.startGame(this.roomCode);
   }
 
   ngOnDestroy() {

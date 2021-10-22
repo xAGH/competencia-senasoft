@@ -8,11 +8,13 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
+import { ToastrService } from 'ngx-toastr';
 import { Observer, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { UserRoomIdentity } from 'src/app/interfaces/user-room-identity';
 import { RoomSessionService } from 'src/app/services/room-session.service';
 import { RoomService } from 'src/app/services/room.service';
+import { SpinnerService } from 'src/app/services/spinner.service';
 
 @Component({
   selector: 'app-hall',
@@ -27,7 +29,9 @@ export class HallComponent implements OnInit, OnDestroy {
     private socket: Socket,
     private roomSrv: RoomService,
     private roomSessionSrv: RoomSessionService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService,
+    private spinner: SpinnerService,
   ) {}
 
   subscriptions: Subscription[] = [];
@@ -39,28 +43,33 @@ export class HallComponent implements OnInit, OnDestroy {
       complete: () => console.log('Complete'),
     };
 
+    this.roomSrv.onJoinedRoom().subscribe((res) => {
+      // Logica de inicio
+      if (res.you.sid == this.socket.ioSocket.id) {
+        this.spinner.hideSpinner();
+        this.roomSessionSrv.info = res;
+        this.router.navigate(['lobby'], {
+          queryParams: { code: this.roomSrv.currentRoomCode },
+        });
+      }
+    });
     this.subscriptions.push(
-      this.roomSrv
-        .onJoinedRoom()
-        .pipe(
-          tap((res: UserRoomIdentity) => {
-            // Logica de inicio
-            this.roomSessionSrv.info = res;
-            this.router.navigate([
-              'lobby',
-              {queryParams: { code: this.roomSrv.currentRoomCode }},
-            ]);
-
-          })
-        )
-        .subscribe(testObserver)
+      this.roomSrv.onAlreadyOnRoom().subscribe((res) => {
+        this.spinner.hideSpinner();
+        this.toastr.success('Ya estás dentro de esta sala');
+      })
     );
     this.subscriptions.push(
-      this.roomSrv.onAlreadyOnRoom().subscribe(testObserver)
+      this.roomSrv.onRoomFull().subscribe((_) => {
+        this.spinner.hideSpinner();
+        this.toastr.error('La sala está llena');
+      })
     );
-    this.subscriptions.push(this.roomSrv.onRoomFull().subscribe(testObserver));
     this.subscriptions.push(
-      this.roomSrv.onRoomNotFound().subscribe(testObserver)
+      this.roomSrv.onRoomNotFound().subscribe((_) => {
+        this.spinner.hideSpinner();
+        this.toastr.error('No se ha encontrado la sala');
+      })
     );
   }
 
@@ -75,6 +84,8 @@ export class HallComponent implements OnInit, OnDestroy {
   }
 
   onJoinRoom() {
+    this.spinner.showSpinner();
+    this.toastr.info('Uniéndose a la sala');
     const roomCode: string | undefined = this.getRoomCode();
     console.log('Joining with code:', roomCode);
     // Valido el código hexadecimal
@@ -82,6 +93,8 @@ export class HallComponent implements OnInit, OnDestroy {
   }
 
   onCreateRoom() {
-    console.log('Creating');
+    this.spinner.showSpinner();
+    this.toastr.info('Creando una sala nueva...')
+    this.roomSrv.createAndJoinRoom();
   }
 }

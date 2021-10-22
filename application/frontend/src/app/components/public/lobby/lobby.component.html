@@ -13,7 +13,7 @@
     </section>
   </section>
   <section class="btn-group">
-    <button class="app-btn">Iniciar partida</button>
+    <button class="app-btn" (click)="onStartGame()" [disabled]="!isOwner || playerList.length != 4">{{isOwner ? "Iniciar partida" : "Esperando al anfitrión"}}</button>
     <button class="app-btn white" (click)="onLeaveLobby()">Cancelar</button>
   </section>
 </main>
