@@ -1,3 +1,4 @@
+import re
 from flask import request
 from flask_socketio import ConnectionRefusedError
 from flask_socketio.namespace import Namespace
@@ -155,6 +156,19 @@ class RoomNamespace(Namespace):
                 "room": room,
                 "current_turn": current_turn
             })
+    
+    def on_discovered_cards(self, data):
+        room = data['room']
+        cards = data['cards']
+        player = data['player']
+        players = [player for player in self.rooms[room]["players"]]
+        player_index = players["sid"].index(player)
+        if player_index is None: 
+            return # Not player index found
+        discovered_cards = self.cards_service.save_discovered_cards(room, player_index, (cards))
+        self.emit("discovered_cards", {
+            "message": discovered_cards
+        }, room=room)
 
     """
         :function - Toma el turno actual declarado al iniciar el juego y apartir de este, genera un turno adelante, para
@@ -184,7 +198,6 @@ class RoomNamespace(Namespace):
             "message": f"New question created by {player}",
             "system_message": True
         }, room=room)
-
 
     def on_throw_accusation(self, data):
         room = data['room']

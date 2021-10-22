@@ -175,10 +175,9 @@ class CardsService():
         for i in range(len(args)):
             self.rooms[room]["players"][player_index]["cards_discovered"].append(args[i])
         
-        return make_response(jsonify({
-            "message": "User discovered cars append in his list.",
-            "statuscode":200
-        }), 200)
+        return {
+            "message": "User discovered cars append in his list."
+        }
 
     def accusation(self: object, room: str, dev_card: int, mod_card: int, error_card: int, player: int) -> Response:
         """
