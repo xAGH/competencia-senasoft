@@ -96,6 +96,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   onChatMessage(msg: string) {
+    if (msg.length == 0) return;
     const you = this.roomSessionSrv.info?.you;
     const room = this.roomSrv.currentRoomCode;
     if (you == undefined || room == undefined) return;
