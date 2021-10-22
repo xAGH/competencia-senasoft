@@ -26,8 +26,10 @@ class RoomNamespace(Namespace):
     def on_message(self, data):
         room = data['room']
         message = data['message']
+        player = data['player']
         self.send({
             "message": message,
+            "player": player,
             "system_message": False
         }, room=room)
 
