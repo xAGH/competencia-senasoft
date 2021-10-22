@@ -1,0 +1,9 @@
+.container {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+
+  h1, h2, h3 {
+    margin-top: 3rem;
+  }
+}

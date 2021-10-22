@@ -31,6 +31,7 @@ const routes: Routes = [
   },
   { path: 'won', loadChildren: () => import('./components/public/won/won.module').then(m => m.WonModule) },
   { path: 'lose', loadChildren: () => import('./components/public/lose/lose.module').then(m => m.LoseModule) },
+  { path: 'instructions', loadChildren: () => import('./components/public/instructions/instructions.module').then(m => m.InstructionsModule) },
   {
     path: '**',
     loadChildren: () =>
