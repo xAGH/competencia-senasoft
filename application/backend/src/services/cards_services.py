@@ -1,14 +1,12 @@
-# Importación de librerías
 from flask import make_response, jsonify, Response
 from src.models import Model
 from random import randint
-from src.namespaces.room_namespace import *
 
 class CardsService():
     
     """Clase para proveer servicios en cuanto a acciones del juego."""
 
-    def __init__(self: object) -> None:
+    def __init__(self: object, rooms) -> None:
         """
         Método constructor.
             |- Parámetros -> self: object => Objeto instanciado que llama al método.
@@ -17,6 +15,7 @@ class CardsService():
                           crea una referencia del diccionario rooms en la clase RoomNamespace.
         """
         self.model: object = Model()
+        self.rooms = rooms
 
     def get_cards(self:object) -> tuple:
 
@@ -87,13 +86,10 @@ class CardsService():
         player2, cards = self.select_players_cards(cards, 1, room)
         player3, cards = self.select_players_cards(cards, 2, room)
         player4, cards = self.select_players_cards(cards, 3, room)
-        return make_response(jsonify({
+        return {
             "hidden_cards": hidden_cards,
-            "player1_cards": player1,
-            "player2_cards": player2,
-            "player3_cards": player3,
-            "player4_cards": player4,
-        }))
+            "player_cards": [player1, player2, player3, player4]
+        }
 
     def add_hidden_cards_to_room(self: object, cards: dict, room: str) -> None:
         """
@@ -107,7 +103,7 @@ class CardsService():
         cards_id: list = []
         for card in cards:
             cards_id.append(card["id"])
-        RoomNamespace.rooms[room]["system"]["hidden_cards"] = cards_id
+        self.rooms[room]["system"]["hidden_cards"] = cards_id
 
     def question(self: object, dev_card: int, mod_card: int, error_card: int, room: str) -> Response:
         """
@@ -123,7 +119,7 @@ class CardsService():
         """
         answers: list = []
 
-        players: dict = RoomNamespace.rooms[room]["players"]
+        players: dict = self.rooms[room]["players"]
 
         # Se recorre la lista que devuelve la llave del diccionario players en la llave "players"
         for i in players:
@@ -177,12 +173,11 @@ class CardsService():
             |- Función -> Guarda las cartas enviadas por parámetros en la lista de cartas descubiertas del jugador correspondiente.
         """
         for i in range(len(args)):
-            RoomNamespace.rooms[room]["players"][player_index]["cards_discovered"].append(args[i])
+            self.rooms[room]["players"][player_index]["cards_discovered"].append(args[i])
         
-        return make_response(jsonify({
-            "message": "User discovered cars append in his list.",
-            "statuscode":200
-        }), 200)
+        return {
+            "message": "User discovered cars append in his list."
+        }
 
     def accusation(self: object, room: str, dev_card: int, mod_card: int, error_card: int, player: int) -> Response:
         """
@@ -197,7 +192,7 @@ class CardsService():
             |- Función -> Verifica las cartas ocultas definidas al inicio de la partida y las compara con las entregadas en los parámetros.
                           Si son iguales, el jugador gana, de lo contrario, pasa el turno.
         """
-        hidden_cards: list = RoomNamespace.rooms[room]["system"]["hidden"]
+        hidden_cards: list = self.rooms[room]["system"]["hidden"]
         accusation_player_cards: list = [dev_card, mod_card, error_card]
 
         if hidden_cards == accusation_player_cards:

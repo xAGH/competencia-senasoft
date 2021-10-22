@@ -20,7 +20,7 @@ class RoomsService:
             room_code += choice
         return room_code
     
-    def create_room(self, owner):
+    def create_room(self):
         try:
             room = self.generate_room_code()
             RoomNamespace.rooms[room] = {
