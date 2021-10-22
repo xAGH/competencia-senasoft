@@ -85,11 +85,9 @@ class RoomNamespace(Namespace):
     def on_request_room_info(self, data):
         room = data['room']
         players = self.rooms[room]["players"]
-        you_match = [player for player in players if player["sid"] == request.sid]
         self.emit("get_room_info", {
             "message": "Room information",
             "players": players,
-            "you": you_match
         }, room=room)
     
     def on_game_start(self, data):

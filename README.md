@@ -119,4 +119,4 @@ que se empleará para el desarrollo de este.
     }
 ~~~
 
-- Almacenamiento permanente (MySQL): Hoalsdasl.
+- Almacenamiento permanente (MySQL): ...
