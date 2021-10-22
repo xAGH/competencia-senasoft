@@ -1,3 +1,4 @@
+from re import match
 from flask import request
 from flask_socketio import rooms, send, emit, ConnectionRefusedError, join_room, leave_room
 from flask_socketio.namespace import Namespace
@@ -10,6 +11,9 @@ class RoomNamespace(Namespace):
     rooms: dict = {}
     cards_service: CardsService = CardsService(rooms)
     current_turn: int = None
+    question_turn_player : int = None
+    question_mode = True
+    question_cards = []
 
     def on_connect(self):
         try:
@@ -34,7 +38,8 @@ class RoomNamespace(Namespace):
             })
             return
         room_players = self.rooms[room]["players"]
-        username = f"player_{len(room_players)+1}"
+        username = GameService.create_random_name()
+        #username = f"player_{len(room_players)+1}"
         try:
             if len(room_players) >= int(getenv('ROOMS_LIMIT')):
                 self.emit("room_full", {
@@ -79,11 +84,19 @@ class RoomNamespace(Namespace):
         if len(self.rooms[room]["players"]) == int(getenv("ROOMS_LIMIT")):
             self.rooms[room]["system"]["isGameStarted"] = True
             room_time = self.rooms[room]["system"]["room_time"] = GameService.get_time()
-            self.current_turn = self.rooms[room]["players"][0]
+            selected_id = None
+            for i in range(len(self.rooms[room]["players"])):
+                player = self.rooms[room]["players"][i]
+                if player["connected"]:
+                    selected_id = i
+                    break
+            self.current_turn = selected_id
+            self.rooms[room]["system"]["current_turn"] = selected_id
             self.emit("game_start", {
                 "message": "Game is started",
-                "data": self.cards_service.serve_cards(),
-                "turn": self.current_turn,
+                "data": self.cards_service.serve_cards(room),
+                "players_ids": [player["sid"] for player in self.rooms[room]["players"]],
+                "first_turn": self.current_turn,
                 "time": room_time
             }, room=room)
             return
@@ -104,8 +117,48 @@ class RoomNamespace(Namespace):
                 "time": new_room_time
             }, room=room)
     
-    def on_game_in_course(self):
-        pass
+    def on_game_round(self, data):
+        room = data['room']
+        selected_option = data['option']
+        turn = data['turn']
+        current_turn = self.rooms[room]["system"]["current_turn"]
+        if(current_turn == turn):
+            if (selected_option == 0):
+                # question
+                self.on_make_question({
+                    "room": room
+                })
+                pass
+            elif (selected_option == 1):
+                # accusation
+                self.on_throw_accusation({
+                    "room": room
+                })
+                pass
+            else:
+                # No option passed
+                pass
+        else:
+            # Change turn
+            self.on_change_turn({
+                "room": room,
+                "current_turn": current_turn
+            })
+
+        
+    """
+        :function - Toma el turno actual declarado al iniciar el juego y apartir de este, genera un turno adelante, para
+        asi dar continuidad al siguiente usuario.
+    """
+    def on_change_turn(self, data):
+        room = data['room']
+        turn = data['current_turn']
+        current_turn = self.rooms[room]["system"]["current_turn"] = turn
+        new_turn = GameService.create_turn(current_turn)
+        self.emit("turn_changed", {
+            "message": "Next user",
+            "new_turn": new_turn[0]
+        }, room=room)
 
     """
         :method @on_make_question —  se encarga de llamar al servicio de crear una nueva pregunta
@@ -125,12 +178,15 @@ class RoomNamespace(Namespace):
             self.emit("user_win", {
                 "message": "User's accusation win"
             }, room=room)
-        gen_turn = GameService.next_turn(self.current_turn)
-        self.current_turn = next(gen_turn)
+            return
+        current_turn = self.rooms[room]["system"]["current_turn"]
+        new_turn = GameService.create_turn(current_turn)
+        # gen_turn = GameService.next_turn(self.current_turn)
+        # self.current_turn = next(gen_turn)
         new_room_time = self.rooms[room]["system"]["room_time"] = GameService.get_time()
         self.emit("game_next_turn", {
             "data": "False accusation",
-            "turn": self.current_turn,
+            "turn": new_turn,
             "time": new_room_time
         }, room=room)
     
@@ -140,7 +196,8 @@ class RoomNamespace(Namespace):
         self.rooms.pop(room)
         self.close_room(room)
         self.emit("game_end", {
-            "message": "Games end"
+            "message": "Games end",
+            "winner": ""
         }, room=room)
     
     def on_leave(self, data):
@@ -161,6 +218,16 @@ class RoomNamespace(Namespace):
         self.send({
             "message": f"User {username} disconnected from room {room}"
         }, room=room)
-    
+
     def on_disconnect(self):
-        print("Disconnected", request.sid)   
+        self.emit("user_disconnected")
+    
+    def on_request_disconnection(self, data):
+        print("Disconnected", request.sid)
+        room = data['room']
+        match = [player for player in self.rooms[room]["players"] if player["sid"] == request.sid]
+        if len(match) == 0: return
+        self.on_leave({
+            "room": room,
+            "username": match[0]
+        })
