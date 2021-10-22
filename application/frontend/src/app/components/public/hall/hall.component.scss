@@ -1,0 +1,53 @@
+main {
+  flex:1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .game-logo {
+    width: 192px;
+  }
+
+  .room-option-selection {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 10%;
+
+    .option-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 45%;
+      height: 200px;
+      max-width: 300px;
+
+      .input-section {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        align-items: center;
+
+        input {
+          width: 100%;
+          text-transform: uppercase;
+        }
+
+        strong {
+          font-size: 1.25rem;
+        }
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .content {
+        flex:1;
+      }
+    }
+  }
+
+}

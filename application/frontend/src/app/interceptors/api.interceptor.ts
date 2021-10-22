@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { SpinnerService } from '../services';
+import { SpinnerService } from '../services/spinner.service';
 import { finalize } from 'rxjs/operators';
 
 @Injectable()
@@ -19,11 +19,11 @@ export class ApiInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.spinnerService.showSpinner();
-    request.clone({
+    const cloneRequest = request.clone({
       url: `${this.apiUrl}/${request.url}`,
       withCredentials: true,
     })
-    return next.handle(request).pipe(
+    return next.handle(cloneRequest).pipe(
       finalize(() => this.spinnerService.hideSpinner())
     );
   }

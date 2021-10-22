@@ -9,7 +9,7 @@ from os import getenv
 class RoomNamespace(Namespace):
 
     rooms: dict = {}
-    cards_service: CardsService = CardsService(rooms)
+    cards_service: CardsService = CardsService()
     current_turn: int = None
     question_turn_player : int = None
     question_mode = True
@@ -58,7 +58,7 @@ class RoomNamespace(Namespace):
                 return
             self.enter_room(request.sid, room=room)
             new_player = {
-                "name": username,
+                "name": GameService.generate_name(),
                 "sid": request.sid,
                 "cards": [],
                 "discovered_cards": [],

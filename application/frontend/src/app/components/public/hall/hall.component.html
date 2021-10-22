@@ -1,0 +1,20 @@
+<main class="container">
+  <img src="assets/logos/game_logo.png" alt="BugFinder" class="game-logo mb-5">
+  <section class="room-option-selection">
+    <article class="option-card modal-style">
+      <div class="content">
+      </div>
+      <section class="input-section">
+        <strong>#</strong>
+        <input type="text" id="roomInput" #roomInput placeholder="ABCDE" maxlength="5">
+      </section>
+      <button class="app-btn mt-3" (click)="onJoinRoom()">Unirse a una sala</button>
+    </article>
+    <article class="option-card modal-style">
+      <div class="content"></div>
+      <button class="app-btn" (click)="onCreateRoom()">Crear una sala nueva</button>
+    </article>
+  </section>
+
+</main>
+<app-footer></app-footer>

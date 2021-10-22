@@ -1,7 +1,7 @@
 # 1. Competenecia Siigo - BugFinder (Regional del Quindío)
 
 El siguiente archivo busca documentar la estructura del proyecto, estableciendo los directorios del mismo y la arquitectura
-que se empleara para el desarrollo del mismo.
+que se empleará para el desarrollo de este.
 
 ## 1.1. Integrantes
 
