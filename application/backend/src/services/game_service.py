@@ -50,3 +50,10 @@ class GameService:
         number = choice(range(1,255))
         random_name = "{0}{1}{2}".format(adjetive, subject, number)
         return random_name
+
+    @classmethod
+    def generate_name(cls):
+        subject = choice(objects)
+        adjective = choice(adjectives)
+        number = choice(numbers)
+        return f"{adjective}{subject}{number}"

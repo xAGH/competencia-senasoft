@@ -9,7 +9,7 @@ from os import getenv
 class RoomNamespace(Namespace):
 
     rooms: dict = {}
-    cards_service: CardsService = CardsService()
+    cards_service: CardsService = CardsService(rooms)
     current_turn: int = None
     question_turn_player : int = None
     question_mode = True
@@ -41,8 +41,7 @@ class RoomNamespace(Namespace):
             })
             return
         room_players = self.rooms[room]["players"]
-        username = GameService.create_random_name()
-        #username = f"player_{len(room_players)+1}"
+        username = GameService.generate_name()
         try:
             if len(room_players) >= int(getenv('ROOMS_LIMIT')):
                 self.emit("room_full", {
@@ -58,7 +57,7 @@ class RoomNamespace(Namespace):
                 return
             self.enter_room(request.sid, room=room)
             new_player = {
-                "name": GameService.generate_name(),
+                "name": username,
                 "sid": request.sid,
                 "cards": [],
                 "discovered_cards": [],
@@ -82,6 +81,16 @@ class RoomNamespace(Namespace):
             raise ConnectionRefusedError
         except Exception as e:
             raise Exception
+    
+    def on_request_room_info(self, data):
+        room = data['room']
+        players = self.rooms[room]["players"]
+        you_match = [player for player in players if player["sid"] == request.sid]
+        self.emit("get_room_info", {
+            "message": "Room information",
+            "players": players,
+            "you": you_match
+        }, room=room)
     
     def on_game_start(self, data):
         room = data['room']
