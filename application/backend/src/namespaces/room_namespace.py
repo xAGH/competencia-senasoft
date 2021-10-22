@@ -26,8 +26,9 @@ class RoomNamespace(Namespace):
     def on_message(self, data):
         room = data['room']
         message = data['message']
-        self.emit("chat_message", {
-            "message": message
+        self.send({
+            "message": message,
+            "system_message": False
         }, room=room)
 
     def on_join(self, data):
@@ -72,7 +73,8 @@ class RoomNamespace(Namespace):
                 "you" : new_player
             }, room=room)
             self.send({
-                "message": f"User {username} connected in room {room}"
+                "message": f"User {username} joined in room {room}",
+                "system_message": True
             }, room=room)
         except ConnectionRefusedError as cr:
             raise ConnectionRefusedError
@@ -99,7 +101,12 @@ class RoomNamespace(Namespace):
                 "first_turn": self.current_turn,
                 "time": room_time
             }, room=room)
+            self.send({
+                "message": "Starting game...",
+                "system_message": True
+            }, room=room)
             return
+        self.rooms[room]["system"]["isGameStarted"] = False
         self.emit("game_waiting", {
             "message": "Waiting for players"
         }, room=room)
@@ -145,7 +152,6 @@ class RoomNamespace(Namespace):
                 "current_turn": current_turn
             })
 
-        
     """
         :function - Toma el turno actual declarado al iniciar el juego y apartir de este, genera un turno adelante, para
         asi dar continuidad al siguiente usuario.
@@ -165,10 +171,16 @@ class RoomNamespace(Namespace):
     """
     def on_make_question(self, data):
         room = data['room']
+        player = data['player']
         created_question = self.cards_service.question(data['dev_card'], data['mod_card'], data['error_card'], data['room'])
         self.emit("new_question", {
             "system_answer": created_question
         }, room=room)
+        self.send({
+            "message": f"New question created by {player}",
+            "system_message": True
+        }, room=room)
+
 
     def on_throw_accusation(self, data):
         room = data['room']
@@ -216,7 +228,8 @@ class RoomNamespace(Namespace):
             "users": self.rooms[room]["players"]
         }, room=room)
         self.send({
-            "message": f"User {username} disconnected from room {room}"
+            "message": f"User {username} disconnected from room {room}",
+            "system_message": True
         }, room=room)
 
     def on_disconnect(self):

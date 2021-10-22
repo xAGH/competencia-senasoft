@@ -80,13 +80,10 @@ class CardsService:
         player2, cards = self.select_players_cards(cards, 1, room)
         player3, cards = self.select_players_cards(cards, 2, room)
         player4, cards = self.select_players_cards(cards, 3, room)
-        return make_response(jsonify({
+        return {
             "hidden_cards": hidden_cards,
-            "player1_cards": player1,
-            "player2_cards": player2,
-            "player3_cards": player3,
-            "player4_cards": player4,
-        }))
+            "player_cards": [player1, player2, player3, player4]
+        }
 
     def add_hidden_cards_to_room(self, cards: dict, room: str) -> None:
         """
