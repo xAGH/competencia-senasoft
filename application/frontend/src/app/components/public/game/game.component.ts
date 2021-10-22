@@ -1,6 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { ChatMessage } from 'src/app/interfaces/chat-message';
 import { GameCard } from 'src/app/interfaces/game-card';
 import { PlayerInfo } from 'src/app/interfaces/player-info';
@@ -29,10 +31,12 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   gamePlayers: PlayerInfo[] = [];
-  playerCards: number[] = [1, 15, 12, 3];
+  playerCards: number[] = [];
 
   chatMessages: ChatMessage[] = [];
   currentPlayer : PlayerInfo;
+  playerNumber: number = -1;
+  playerName: string = '';
 
   showChat = false;
 
@@ -54,8 +58,15 @@ export class GameComponent implements OnInit, OnDestroy {
     this.roomSrv.onGetRoomInfo().subscribe((data: any) => {
       console.log(data, "ROOM INFO", data)
       this.roomSessionSrv.info.users = data.players;
-      this.gamePlayers = this.roomSessionSrv.info?.users ?? [];
+      this.gamePlayers = data.players ?? [];
       this.currentPlayer = this.gamePlayers[this.gameSrv.currentTurn];
+      const player = this.roomSessionSrv.info.you;
+      this.playerNumber = this.gamePlayers.findIndex(
+        (el) => el.sid == player.sid
+      );
+      this.playerName = player.name;
+      this.playerCards = this.gameSrv.playerCards.map(el => el.id);
+      console.log(this)
     });
     this.roomSrv.onMessage().subscribe((msgData: any) => {
       const player = msgData.player;
@@ -63,17 +74,16 @@ export class GameComponent implements OnInit, OnDestroy {
         (el) => el.sid == player.sid
       );
       const isSystemMessage = msgData.system_message;
+      this.playerNumber = playerIndex;
       this.chatMessages.push({
         playerID: isSystemMessage ? 999 : playerIndex,
         message: msgData.message,
         isSystemMessage: isSystemMessage,
       });
     });
-    this.roomSrv.onGameStart().subscribe((res) => {
+
+    of(delay(4000)).subscribe(() => {
       this.showReverse = false;
-      console.log(res);
-
-
     })
   }
 

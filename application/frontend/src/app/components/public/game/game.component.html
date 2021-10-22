@@ -1,10 +1,10 @@
 <main class="container app-game">
   <section class="top-section">
-    <section class="game-stats">
-
+    <section class="game-stats" *ngIf="playerName.length != 0">
+      <strong>Tu eres <span [ngClass]="'player-color-'+(playerNumber+1)">{{playerName}}</span></strong>
     </section>
     <section class="modal-section">
-      <app-ingame-modal></app-ingame-modal>
+      <!-- <app-ingame-modal></app-ingame-modal> -->
     </section>
   </section>
   <div class="section-wrapper">

@@ -63,15 +63,15 @@ export class LobbyComponent implements OnInit, OnDestroy {
           const player_index = this.playerList.findIndex(
             (el) => el.sid == this.roomSessionSrv.info?.you.sid
           );
-          console.log(
-            this.playerList,
-            player_index,
-            this.roomSessionSrv.info?.you.sid
-          );
           this.gameSrv.playerCards = res.data.player_cards[player_index];
           this.gameSrv.hiddenCards = res.data.hidden_cards;
           this.gameSrv.currentTurn = res.firstTurn;
           this.router.navigateByUrl('game');
+          console.log("CARDS",
+            player_index,
+            this.gameSrv.playerCards,
+            res.players_ids
+          );
         })
       );
     } else {
