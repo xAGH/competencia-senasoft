@@ -24,8 +24,8 @@ class RoomController(MethodView):
 
     def post(self):
         if request.is_json:
-            owner = request.json['owner']
-            return self.room_service.create_room(owner)
+            #owner = request.json['owner']
+            return self.room_service.create_room()
         response = make_response(jsonify({
             "message": "Bad request. Please send a Json format",
             "statusCode": 400
