@@ -50,7 +50,7 @@ class RoomNamespace(Namespace):
                 return
             self.enter_room(request.sid, room=room)
             new_player = {
-                "name": username,
+                "name": GameService.generate_name(),
                 "sid": request.sid,
                 "cards": [],
                 "discovered_cards": [],

@@ -24,13 +24,13 @@ style="padding: 0%;
        border-radius: 25px;
        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;"
 >
-    <img style="width: 50%;
+    <img style="width: 75%;
                 float: left;
-                margin-left: 25%;"
+                margin-left: 16%;"
     src="https://alejo-imagenes-desde-flask.s3.amazonaws.com/game_logo.png" alt="Imagen">
     <br style="clear: both;">
     <center><h1 style="font-weight: 400;">Hola <strong>{nickname}</strong></h1> <h2 style="font-weight: 400; font-size:24px;"><br>¡Gracias por registrarte en SiigoBugFinder!</h2>
-    <h2 style="font-weight: 400;">Para que tengas acceso a la <strong>tabla de puntuaciones</strong> y <br><strong>conservar tu nickname único</strong> <br><br><a
+    <h2 style="font-weight: 400;">Para que tengas acceso a la <strong>tabla de puntuaciones</strong> y <strong>conservar tu nickname único</strong> <br><br><a
         style="color: white;
                padding: 10px;
                border-radius: 50px;
