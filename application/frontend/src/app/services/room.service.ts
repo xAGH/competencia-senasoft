@@ -51,6 +51,40 @@ export class RoomService {
     return this.socket.fromEvent('room_not_found');
   }
 
+  startGame(roomCode: string) {
+    this.socket.emit('game_start', { room: roomCode });
+  }
+
+  onGameStart(): Observable<any> {
+    return this.socket.fromEvent('game_start');
+  }
+
+  onUserDisconnect(): Observable<any> {
+    return this.socket.fromEvent('disconnect').pipe(
+      tap(
+        this.socket.emit('request_disconnection', {
+          room: this.currentRoomCode,
+        })
+      )
+    );
+  }
+
+  onMessage() {
+    return this.socket.fromEvent('message');
+  }
+
+  sendMessage(data: {message: string, player: any, room: string}) {
+    this.socket.ioSocket.send(data);
+  }
+
+  requestRoomInfo(data: any) {
+    this.socket.emit('request_room_info', data);
+  }
+
+  onGetRoomInfo() : Observable<any>{
+    return this.socket.fromEvent('get_room_info');
+  }
+
   checkRoomExists(roomCode: string): Observable<any> {
     return this.http
       .get('room?code=' + roomCode)
@@ -62,6 +96,17 @@ export class RoomService {
       room: this.currentRoomCode,
       username: user.name,
     });
+  }
+
+  createAndJoinRoom() {
+    this.http.post('create_room', {}).subscribe((res : any) => {
+      const roomCode = res.room;
+      this.joinRoom(roomCode);
+    });
+  }
+
+  getSocketID() {
+    return this.socket.ioSocket.id;
   }
 
   static isRoomCodeValid(roomCode: string | undefined): boolean {
