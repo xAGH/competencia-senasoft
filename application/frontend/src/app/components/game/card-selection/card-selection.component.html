@@ -1,0 +1,12 @@
+<section class="card-selector modal-style">
+  <header>
+    <app-heading title="Selecciona una carta"></app-heading>
+  </header>
+  <hr class="w-100">
+  <section class="game-cards-container">
+    <app-card *ngFor="let card of cardDetails;index as i" (click)="markSelected(i)" style="cursor: pointer;" [selected]="selectTable[i]" [cardTitle]="card.name" [cardType]="card.type" [cardImgUrl]="card.url"></app-card>
+  </section>
+  <footer class="mt-5">
+    <button class="app-btn">Aceptar</button>
+  </footer>
+</section>

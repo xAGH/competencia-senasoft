@@ -13,6 +13,7 @@ export class CardComponent implements OnInit {
   @Input() cardType : string = 'dev';
   @Input() cardTitle: string = 'CardTitle';
   @Input() reverse = false;
+  @Input() selected = false;
 
   ngOnInit(): void {
   }

@@ -5,6 +5,7 @@ import { IngameModalComponent } from './ingame-modal/ingame-modal.component';
 import { ChatViewComponent } from './chat-view/chat-view.component';
 import { SharedModule } from '../shared/shared.module';
 import { ChatMessageComponent } from './chat-message/chat-message.component';
+import { CardSelectionComponent } from './card-selection/card-selection.component';
 
 
 
@@ -14,6 +15,7 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
     IngameModalComponent,
     ChatViewComponent,
     ChatMessageComponent,
+    CardSelectionComponent,
   ],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { ChatMessageComponent } from './chat-message/chat-message.component';
     IngameModalComponent,
     ChatViewComponent,
     ChatMessageComponent,
+    CardSelectionComponent,
   ]
 })
 export class GameModule { }
