@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  BASE_URL: 'http://5fa3-191-106-166-172.ngrok.io',
-  websocket_endpoint: 'http://5fa3-191-106-166-172.ngrok.io/room',
+  BASE_URL: 'http://localhost:4000',
+  websocket_endpoint: 'http://localhost:4000/room',
 };
 
 /*
