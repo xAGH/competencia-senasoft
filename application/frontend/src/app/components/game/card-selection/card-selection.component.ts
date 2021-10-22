@@ -40,8 +40,6 @@ export class CardSelectionComponent implements OnInit {
     } else {
       this.selectTable[i] = !this.selectTable[i];
     }
-
-    console.log(this)
   }
 
   buildDetails(ids: number[]) {

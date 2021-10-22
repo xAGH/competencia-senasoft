@@ -23,7 +23,6 @@ export class RoomService {
         this.socket.emit('join', {
           room: roomCode,
         });
-        console.log('ROOM', res);
         return res;
       });
     } else {

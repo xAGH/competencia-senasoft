@@ -31,7 +31,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.roomCode = this.route.snapshot.queryParamMap.get('code');
-    console.log(this.roomCode, 'ROOM');
     if (this.roomCode) {
       const playerList = this.roomSessionSrv.info;
       if (playerList?.users == undefined) {
@@ -45,7 +44,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
         this.roomSrv.onJoinedRoom().subscribe((res) => {
           this.playerList = res.users;
           this.isOwner = this.roomSrv.getSocketID() == this.playerList[0].sid;
-          console.log(this.roomSrv.getSocketID(), this.playerList);
         })
       );
 
@@ -58,7 +56,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(
         this.roomSrv.onGameStart().subscribe((res) => {
-          console.log(res);
           this.gameSrv.currentTurn = res.turn;
           const player_index = this.playerList.findIndex(
             (el) => el.sid == this.roomSessionSrv.info?.you.sid
@@ -67,11 +64,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
           this.gameSrv.hiddenCards = res.data.hidden_cards;
           this.gameSrv.currentTurn = res.firstTurn;
           this.router.navigateByUrl('game');
-          console.log("CARDS",
-            player_index,
-            this.gameSrv.playerCards,
-            res.players_ids
-          );
         })
       );
     } else {

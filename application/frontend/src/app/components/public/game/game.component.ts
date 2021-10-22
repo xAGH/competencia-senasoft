@@ -43,7 +43,6 @@ export class GameComponent implements OnInit, OnDestroy {
   showReverse = true;
 
   resolvePlayerName(id: number) {
-    console.log('Calling id:', id, 'On:', this.gamePlayers);
     if (id == 999) return 'Servidor';
     return this.gamePlayers[id]?.name ?? 'Desconocido';
   }
@@ -53,10 +52,8 @@ export class GameComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl('home');
       return;
     }
-    console.log(this.gameSrv.hiddenCards);
     this.roomSrv.requestRoomInfo({room: this.roomSrv.currentRoomCode});
     this.roomSrv.onGetRoomInfo().subscribe((data: any) => {
-      console.log(data, "ROOM INFO", data)
       this.roomSessionSrv.info.users = data.players;
       this.gamePlayers = data.players ?? [];
       this.currentPlayer = this.gamePlayers[this.gameSrv.currentTurn];
@@ -66,7 +63,6 @@ export class GameComponent implements OnInit, OnDestroy {
       );
       this.playerName = player.name;
       this.playerCards = this.gameSrv.playerCards.map(el => el.id);
-      console.log(this)
     });
     this.roomSrv.onMessage().subscribe((msgData: any) => {
       const player = msgData.player;
