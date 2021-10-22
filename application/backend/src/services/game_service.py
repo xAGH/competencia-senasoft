@@ -1,8 +1,8 @@
 from os import getenv
 from random import choice
-import time
 from src.services.provide_names import *
 from random import choice
+import time
 
 class GameService:
 

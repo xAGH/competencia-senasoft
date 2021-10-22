@@ -1,6 +1,5 @@
-from re import match
 from flask import request
-from flask_socketio import rooms, send, emit, ConnectionRefusedError, join_room, leave_room
+from flask_socketio import ConnectionRefusedError
 from flask_socketio.namespace import Namespace
 from src.services.game_service import GameService
 from src.services.cards_services import CardsService
@@ -139,24 +138,20 @@ class RoomNamespace(Namespace):
         turn = data['turn']
         current_turn = self.rooms[room]["system"]["current_turn"]
         if(current_turn == turn):
-            if (selected_option == 0):
-                # question
+            if (selected_option == 0): # question
                 self.on_make_question({
                     "room": room
                 })
                 pass
-            elif (selected_option == 1):
-                # accusation
+            elif (selected_option == 1): # accusation
                 self.on_throw_accusation({
                     "room": room
                 })
                 pass
-            else:
-                # No option passed
+            else: # No option passed
                 pass
         else:
-            # Change turn
-            self.on_change_turn({
+            self.on_change_turn({ # Change turn
                 "room": room,
                 "current_turn": current_turn
             })
@@ -202,8 +197,6 @@ class RoomNamespace(Namespace):
             return
         current_turn = self.rooms[room]["system"]["current_turn"]
         new_turn = GameService.create_turn(current_turn)
-        # gen_turn = GameService.next_turn(self.current_turn)
-        # self.current_turn = next(gen_turn)
         new_room_time = self.rooms[room]["system"]["room_time"] = GameService.get_time()
         self.emit("game_next_turn", {
             "data": "False accusation",
@@ -214,6 +207,9 @@ class RoomNamespace(Namespace):
     def on_game_end(self, data):
         room = data['room']
         self.rooms[room]["system"]["isGameStarted"] = False
+        players = self.rooms[room]["players"]
+        for i in range(players):
+            self.leave_room(players["sid"], room=room)
         self.rooms.pop(room)
         self.close_room(room)
         self.emit("game_end", {
@@ -226,9 +222,7 @@ class RoomNamespace(Namespace):
         username = data['username']
         players = self.rooms[room]["players"]
         found = [player for player in players if player["name"] == username]
-
-        # Jugador no encontrado
-        if len(found) == 0: return
+        if len(found) == 0: return # Jugador no encontrado
         player = found[0]
         players.remove(player)
         self.leave_room(player["sid"], room)

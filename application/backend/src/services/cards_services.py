@@ -1,4 +1,3 @@
-# Importación de librerías
 from flask import make_response, jsonify, Response
 from src.models import Model
 from random import randint
