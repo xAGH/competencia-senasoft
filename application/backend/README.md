@@ -10,7 +10,7 @@ En el siguiente documento se definirá la estructura del backend del proyecto. S
 - [pyjwt](https://pyjwt.readthedocs.io/en/stable/)
 - [pymysql](https://pypi.org/project/PyMySQL/)
   
-## Eventos de los sockets (Server)
+## 1.2. Eventos de los sockets (Server)
 
 RoomNamespace.on_connect() — se encarga de connectar nuevos usuarios.
 
@@ -48,7 +48,7 @@ RoomNamespace.on_leave(data) — se emite el evento cuando un usuario se sale de
 
 RoomNamespace.on_disconnect() — se emite el evento en el momento que un usuario recarga la página o se sale del navegador.
 
-## Eventos de los sockets (Client)
+## 1.3. Eventos de los sockets (Client)
 
 - RoomNamespace.on_join():
 
@@ -86,10 +86,19 @@ RoomNamespace.on_disconnect() — se emite el evento en el momento que un usuari
 
     Socket.user_leave() — se emite cuando el usuario cierra una pestaña o se sale de la aplicación
 
-### 1.1.1. Iniciando
+### 1.3.1. Iniciando
 
-1. Instalar paquetes necesarios para el proyecto.
+1. Instalar paquetes necesarios para el proyecto, ubicándose en el directorio application/backend ejecuta el siguiente comando.
 
 ```bash
     pip install -r requirements.txt
+```
+
+2. Ejecutar el archivo en application/database/siigo_bugfinder.sql en un gestor de bases de datos MySql.
+   2.1. Entrar al archivo en appilcation/backend/src/database.py y modificar la linea 10 cambiando el valor password y el user si es necesario es necesario.
+
+3. Arrancar el servidor.
+
+```bash
+    python main.py 
 ```

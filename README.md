@@ -83,37 +83,42 @@ que se empleará para el desarrollo de este.
         "room_code": {
             "players": [
                 {
+                    "sid": "abcdeasd-asdfase",
                     "cards":[4, 8, 5, 9],
                     "discovered_cards": [1, 6, 10, 11, 12, 15],
                     "score": 1/12 * 100,
-                    "nickname": "Nickname"
+                    "nickname": "Nickname",
                     "conected": True
                 },
                 {
+                    "sid": "asdbahe-asdfase",
                     "cards":[4, 8, 5, 9],
                     "discovered_cards": [1, 6, 10, 11, 12, 15],
                     "score": 1/12 * 100,
-                    "nickname": "Nickname"
+                    "nickname": "Nickname",
                     "conected": True
                 },
                 {
+                    "sid": "uyasejkhe-asdfase",
                     "cards":[4, 8, 5, 9],
                     "discovered_cards": [1, 6, 10, 11, 12, 15],
                     "score": 1/12 * 100,
-                    "nickname": "Nickname"
+                    "nickname": "Nickname",
                     "conected": True
                 },
                 {
+                    "sid": "ueaheiasd-asdfase",
                     "cards":[4, 8, 5, 9],
                     "discovered_cards": [1, 6, 10, 11, 12, 15],
                     "score": 1/12 * 100,
-                    "nickname": "Nickname"
+                    "nickname": "Nickname",
                     "conected": True
                 },
             ],
             "system": {
                 "hidden_cards": [1,2,3],
                 "isGameStarted": True,
+                "current_turn": 1
             }
         }
     }
